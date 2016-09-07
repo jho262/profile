@@ -1,0 +1,53 @@
+p {text-indent: 0em;
+color: #222222;
+margin-top: 1.20em;
+margin-bottom: -.40em;
+font-size: 16px;
+}
+
+li {font-size: 14px;
+text-indent: 0em;
+line-height: 18px;
+margin-bottom: .40em; }
+
+body { background-image: url("/resume/images/pattern-06.jpg") }
+
+table#spcl {border-style: none;
+}
+
+table { margin-right: auto; 
+margin-left: auto;
+border-style: solid;
+border-width: 2px;
+color: #222222; }
+
+td#nav { width: 160px;
+font-size: 16px;
+border-style: solid;
+border-width: 2px;
+padding: 20px;
+background-image: url("/resume/images/natfl374.jpg");
+}
+
+td#main { width: 800px;
+height: 500px;
+border-style: solid;
+border-width: 2px;
+padding: 20px;
+background-image: url("/resume/images/NatureBkgrd.jpg") }
+td#main_rt { padding: 30px;
+vertical-align: top;
+}
+
+h1 { text-align: center;
+font-family:  times, courier, helvetica;
+font-size: 300% ;
+color: white;
+margin-top: 14px;
+margin-bottom: 14px
+}
+
+h2 { text-align: left;
+margin-left: 0px;
+color: #222222 
+}

@@ -1,0 +1,31 @@
+SUMMARY OF GIT BASIC COMMANDS
+
+create a directory for your local repository
+	mkdir ~/myproj
+
+create a local git repository
+	init git
+
+create your source file
+	touch myfile.txt
+
+check status of repository
+	git status -> would show myfile.txt as an untracked file
+
+add the file to the git staging environment (also referred to as index)
+	git add
+
+repeat status check
+	git status -> now shows myfile.txt under "Changes to be committed:, new file:"
+
+check-in staged files into the git central repository
+	git commit -m "my first source file for the project"
+
+create a new branch off the master branch/working branch
+	git checkout -b <my branch name>  
+
+check status of your branch
+	git branch  -> should show the new branch name under prior master/working branch
+
+	notes:  you can switch back and forth between master and new branch.  If you check-in
+		files on the master branch, they are not seen on the new branch until merged.

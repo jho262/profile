@@ -1,0 +1,138 @@
+<html>
+<head><title>Sample Shell Script</title></head>
+<body>
+<h1>Sample Shell Script</h1>
+<br/>
+<p>
+#!/bin/sh<br />
+<br />
+# run.sh - sample script to show <br />
+#    - how to process arguments<br />
+#    - how to pass args to a function<br />
+#    - how to return a value from a function<br />
+#    - how to do shell arithmetic<br />
+#    - how to pass shell variables to awk and invoke awk commands from a file<br />
+#    - here document syntax<br />
+#    - general shell script template with good practices such as header info,<br />
+#      sourcing script environment variables, using descriptive variables<br />
+#      for error codes<br />
+# author  :  me<br />
+# created :  2014-01-01<br />
+# modified:  2014-11-30<br />
+#   G. Lee  (1) fixed bug in usage function ...<br />
+
+function usage<br />
+{<br />
+    echo "$PROG [-h] [-f f_parameter] [-o o_parameter]<br />
+    Examples:  $PROG -h                   -&gt; prints this help message.<br />
+               $PROG -f file1             -&gt; reads file1<br />
+               $PROG -f file1 -o fileout  -&gt; reads file1, writes fileout"<br />
+<br />
+    exit 0<br />
+}<br />
+<br />
+function rtn_sum<br />
+{<br />
+    val1=$1<br />
+    val2=$2<br />
+# arithmetic method 1<br />
+#    val3=`expr $val1 + $val2`<br />
+# arithmetic method 2<br />
+    val3=$(($val1 + $val2)) <br/>
+    echo $val3<br />
+    exit 0<br />
+}<br />
+<br />
+#############################<br />
+# MAIN PROGRAM<br />
+#############################<br />
+PROG=`basename $0`<br />
+E_FILE_MISSING=1<br />
+<br />
+# set script environment variables<br />
+. $HOME/.myEnvVars<br />
+<br />
+# process command line arguments<br />
+
+while [ "$1" != "" ];<br />
+do<br />
+   case $1 in<br />
+      -h | --help ) usage<br />
+                    exit 0<br />
+                    ;;<br />
+      -f ) shift<br />
+           fname=$1<br />
+           ;;<br />
+      -o ) shift<br />
+           fout=$1<br />
+           ;;<br />
+       * ) usage<br />
+           <br />
+   esac<br />
+   shift<br />
+done<br />
+<br />
+# check validity of args<br />
+if [ ! -r $fname ];<br />
+then<br />
+   echo "input file, $fname, does not exist"<br />
+   exit $E_FILE_MISSING<br />
+fi<br />
+<br />
+if [ -r $fout ];<br />
+then<br />
+   mv $fout ${fout}.bak<br />
+fi<br />
+<br />
+# read from input file<br />
+while read f pid f;<br />
+do<br />
+   echo "pid = $pid"<br />
+done &lt; $fname<br />
+<br />
+# pass args to a function, return a value<br />
+a=4<br />
+b=3<br />
+c=`rtn_sum $a $b`<br />
+echo "sum of $a + $b = $c"<br />
+<br />
+# here document<br />
+cat &lt;&lt; EOF<br />
+   several lines of <br />
+   my data is<br />
+   listed here<br />
+EOF<br />
+<br />
+# invoking awk using commands in .awk file and passing shell variables<br />
+gold_price=400<br />
+silver_price=10<br />
+<br />
+awk -f sum.awk -v pg=$gold_price -v ps=$silver_price qtys.txt<br />
+# contents of sum.awk<br />
+# BEGIN {<br />
+#    wt_gold=0<br />
+#    wt_silver=0<br />
+#    }<br />
+# /gold/    { num_gold++; wt_gold += $2 }<br />
+# /silver/  { num_silver++; wt_silver += $2 } <br />
+# END {<br />
+#    val_gold   = pg * wt_gold<br />
+#    val_silver = ps* wt_silver<br />
+#    print "value of gold is", val_gold<br />
+#    print "value of silver is", val_silver<br />
+#    }<br />
+#<br />
+# contents of qtys.txt<br />
+# gold 8<br />
+# silver 3<br />
+# gold 4<br />
+# silver 4<br />
+
+<br />
+echo "filename = $fname"<br />
+echo "input file is $fname" &gt; $fout<br />
+exit 0<br />
+<br />
+</p>
+</body>
+</html>

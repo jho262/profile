@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>James Ho - Cover Letter</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+
+</head>
+
+<body>
+
+<h1>JAMES HO</h1>
+	<div class="all">
+
+		<div class="leftPane" >
+			<br /><br /><br />
+			<br /><br /><br />
+				<a href="cover_letter.html">Cover Letter</a><br /><br />
+				<a href="index.html">Summary</a><br /><br />
+				<a href="myjobs.html">Work Experience</a><br /><br />
+				<a href="myedu.html">Education / Licenses / Certifications</a><br /><br />
+				<a href="../jhpage/index.html">Personal Activities</a><br /><br />
+				<a href="mailto.html">Contact Info</a><br /><br />
+		</div>
+
+		<div class="main">
+<br />
+			<h2> &nbsp; Cover Letter</h2>
+		<fieldset>
+			<h3>RE:  Opportunity within your organization</h3>
+			<h3>To whom it may concern:</h3>
+			<p>I am very interested in discussing possible opportunities in the field of information systems/processing.  I am confident my background and experience will enable me to provide immediate value to your organization in the area of system implementation, database administration, data analysis, or information reporting.</p>
+			<p>I have administration experience with an enterprise wide CRM tool and a background in database administration, in both relational and configuration management databases. I have excellent skills in web development, troubleshooting data issues, and automating repetitive tasks.  I excel in implementing and administering new tools/processes to an organization leveraging my communication skills, enjoyment working with others, Perl/Unix shell scripting expertise, and web skills.</p>
+			<p>My value to an organization includes:</p>
+			<ul>
+			<li class="spaceA">automating repetitive activities with CRON jobs to provide timely, accurate delivery of information </li>
+			<li class="spaceA">developing unix/linux shell, perl, and expect scripts to perform global operations on all stores</li>
+			<li class="spaceA">creating internal web pages to centralize information and provide a means to invoke scripts</li>
+			<li class="spaceA">identifying problems or inefficiencies in existing information systems/processes</li>
+			<li class="spaceA">troubleshooting to identify root cause and to fix corruption in databases</li>
+			<li class="spaceA">utilizing advanced Unix/Linux scripting on huge filesystems to quickly detect and fix file issues, extract and reformat data, and generate reports</li>
+			<li class="spaceA">generating highly complex SQL queries in Oracle, MSSQL, PostgreSQL, OLTP, and data warehouses</li>
+			<li class="spaceA">smoothly implementing new, more efficient tools/processes for an organization</li>
+			<li class="spaceA">providing high quality end-user support to ensure rapid adoption and continued benefit of new tools</li>
+			<li class="spaceA">developing web-based tutorials, QA dashboards, complex data queries and reports</li>
+
+			</ul>
+			<p>My ideal job would involve the development of tools to automate and streamline processes, 
+provide queries for timely and accurate data extraction from flat files/database, and creation of web-based tools that can perform 
+global operations on remote servers and present results in an online dashboard.  A position as a Shell Programmer, Programmer Analyst, or Automation Engineer
+                              would highly interest me as it would align well with my advanced skills in unix/linux shell programming, experience in process automation, 
+advanced SQL query generation, and web-development.</p>
+			<p>If my background and experience meets your needs, I welcome the opportunity to discuss my qualifications further.  I can be reached at (925) 786-7164.  I look forward to hearing from you.</p>
+			<p><br />Sincerely, <br /></p>
+			<h3>James Ho</h3>
+
+  <p>
+    <a href="jamesho_resume_2016Q1.doc">Download Resume - Microsoft Word Format</a>
+  <br/><br/>
+  </p>
+		</fieldset>
+		</div>
+
+	</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>James Ho - Summary</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="css/mystyle.css" />
+	<script type='text/javascript' src='/jquery/jquery-3.1.0.min.js'></script>
+	<script type='text/javascript'>
+	$(function(){
+		$('div.leftPane').load('navigate.html');
+	});
+	</script>
+	<style type="text/css">
+		div.body ul.tabs {
+			background-color: #ddd;
+		}
+		div.body ul.tabs li.menuTab {
+			top: 100px;
+			display: inline;
+		}
+	</style>
+
+	<script type="text/javascript" src="/jquery/jquery-3.1.0.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var content = $('div.main fieldset div');
+			
+			$('div.main ul.tabs li.menuTab a').click(function() {
+				content.hide();
+				content.filter(this.hash).slideDown(1500);
+				$('div.main ul.tabs li.menuTab a').removeClass('selected');	
+				$(this).addClass('selected');
+				return false;
+			});
+
+			$('.menuTab a').click( function() {
+				$('a img.p2').hide();
+				$('a img.p1').show();
+				$('img.p1', this).hide();
+				$('img.p2', this).show();
+			});
+
+			$('.menuTab a.def').click();
+		})
+	</script>
+</head>
+
+<body>
+
+<h1>JAMES HO</h1>
+
+<div class="all">
+	<div class="leftPane">
+	</div>
+
+	<div class="main">
+		<h2 class="center">WORK EXPERIENCE</h2>
+<br /><br />
+		<ul class="tabs">
+			<li class="menuTab"><a class="def" href="#bodyIG"><img class="p1" src="images/insightglobal2.jpg" alt="InsightGlobal blue btn" /><img class="p2" src="images/insightglobal.jpg" alt="InsightGlobal yellow btn" /></a></li> 
+
+			<li class="menuTab"><a href="#bodyKP"><img class="p1" src="images/kp2.jpg" alt="KP blue btn" /><img class="p2" src="images/kp.jpg" alt="KP yellow btn" /></a></li> 
+
+			<li class="menuTab"><a href="#bodyCM"><img class="p1" src="images/cm2.jpg" alt="cm blue btn" /><img class="p2" src="images/cm.jpg" alt="cm yellow btn" /></a></li> 
+
+			<li class="menuTab"><a href="#bodySUNW"><img class="p1" src="images/sunw2.jpg" alt="sun blue btn" /><img class="p2" src="images/sunw.jpg" alt="sun yellow btn" /></a></li> 
+
+			<li class="menuTab"><a href="#bodyIKOS"><img class="p1" src="images/ikos2.jpg" alt="ikos blue btn" /><img class="p2" src="images/ikos.jpg" alt="ikos yellow btn"/></a></li> 
+
+			<li class="menuTab"><a href="#bodyOther"><img class="p1" src="images/other2.jpg" alt="other accomplishments blue btn" /><img class="p2" src="images/other.jpg" alt="other accomplishments yellow btn" /></a></li> 
+
+		</ul>
+		<div class="horzSpc"> &nbsp; </div>
+
+		<fieldset>
+
+
+			<div id="bodyIG">
+					<h2 class="lhdr">Programmer Analyst - Insight Global (Safeway contract), May 2014 - present<h4></h4></h2>
+					<img class="mypic" src="images/retail_products_170x130_clear.png" alt="retail products image" />
+					<h3>Safeway, Retailing</h3>
+					<p>Migrated PDX Classic pharmacy reports and extracts to Enterprise Pharmacy System (EPS) and developed the web-based tools and programs to automate 
+the conversion of the PDX to EPS database using Oracle SQL, Elixir javascript, perl CGI, PostgreSQL, shell scripting, and HTML</p>
+				<ul>
+<li class="spaceB">Using SQL Developer, wrote complex Oracle PL/SQL as part of effort to upgrade from PDX classic to new Enterprise Pharmacy System (EPS)
+</li>
+<li class="spaceB">Validated report conversions using shell scripting to reformat output for complete column by column comparison
+</li>
+<li class="spaceB">Migrated post-processing shell scripts from AIX 5.3 to Linux 2.6 and updated to reflect new EPS structure
+</li>
+<li class="spaceB">Utilized Subversion as central repository for maintaining Elixir data sources and rml files
+</li>
+<li class="spaceB">Within 2 weeks of hire, attained sufficient expertise in PDX classic, SVN, and Elixir applications to provide training to get new-hires rapidly up to speed
+</li>
+<li class="spaceB">Met Pilot submission deadline by efficient application of SQL and Javascript changes to globally reformat Elixir reports
+</li>
+<li class="spaceB">Performed post-pilot SQL debugging to root cause errors in reporting and developed fixes to accurately extract Sales data to comply with Business requirements
+</li>
+<li class="spaceB">Generated shell programs to automate the EPS conversion process including pre-conversion checks, extracting compressed source data backups, sending progress notifications, 
+performing sanity checks, and sending final summary notification. Significant time savings, repeated accuracy in performing conversions, and the ability to convert multiple stores per night 
+are the obvious benefits that would be realized many times over with the approximately 1,000 stores that would undergo conversion.
+</li>
+<li class="spaceB">Developed a web-based conversion dashboard using perl cgi, shell, expect, and postgreSQL scripts, HTML,  javascript, and cron jobs.
+</li>
+<li class="spaceB">Designed, implemented, documented, and trained offshore deployment team on the conversion automation system which allows for an accelerated conversion schedule only limited 
+by the pre-conversion and post-conversion manual procedures.  Key components included web-based invocation of scripts, centralized dashboard for high level view and real time status on multiple 
+stores undergoing conversion on a single night.
+</li>
+<li class="spaceB">Collaborated with and coordinated efforts by system administrators, support team, application development, change management, QA, and hardware management to implement 
+the automated conversion system
+</li>
+<li class="spaceB">Streamlined the process of extracting receivable and  credit transaction data from numerous stores using expect script to remotely connect, invoke SQL, and format output 
+to facilitate Accounting&apos;s efforts to reconcile discrepancies arising from the conversion.
+</li>
+				</ul>
+				</div>
+
+			<div id="bodyKP">
+					<h2 class="lhdr">Technical Engineer - Kaiser Permanente, 2012-2014<h4>(Sep2012-Feb2013 as KForce Contractor, Feb2013-May2014 as direct Kaiser employee)</h4></h2>
+					<img class="mypic" src="images/healthcare_128x73_clear.png" alt="healthcare logo" />
+					<h3>Non-Profit Company, Kaiser Permanente, Healthcare</h3>
+					<p>Installed and supported document repository management applications, implemented enhancements and monitoring infrastructure to ensure high availability and document security
+</p>
+				<ul>
+<li class="spaceB">Implemented Nagios XI enterprise server to centralize the health checks of document repository applications on AIX/Linux servers to provide a central dashboard for identifying application/server issues.
+</li>
+<li class="spaceB">Developed program to implement auto import process for handling recurring document deliveries via SFTP.</li>
+<li class="spaceB">Implemented CRON jobs to check file permission issues, confirm diskset availability, and restart failed processes as part of effort to ensure continuous document repository access</li>
+<li class="spaceB">Coordinated activities by IBM/Kaiser groups to implement changes to Active Directory and DNS systems in support of document repository application adoption of LDAP authentication</li>
+<li class="spaceB">Supported deployment activities including document repository changes, hardware system upgrades and migrations to confirm post-implementation functionality is not adversely affected</li>
+<li class="spaceB">Developed native SQL queries for report generation as a substitute for SAP business object reports.  Reversion back to SQL query reports mandated by the planned retirement of SAP BO server</li>
+<li class="spaceB">Generated weekly reports on document retrieval counts for detection of abnormal high activity and to track growth over time for early indications of additional resource needs
+</li>
+				</ul>
+				</div>
+
+<div id="bodyCM">
+					<h2 class="lhdr">Customer Support Engineer - Monitise, 2011-2012</h2>
+					<img class="mypic" src="images/cm_99x86_clear.png" alt="clairmail logo" />
+					<h3>Public Company, Monitise (formerly Clairmail), Mobile Banking System</h3>
+					<p>Supported mobile banking systems deployed at Fortune 500 financial institutions as part of a highly valued customer service organization</p>
+				<ul>
+<li class="spaceB">Investigated and corrected server system problems related to network connection/firewall, database connectivity, disk usage, LDAP authentication, memory, bank backend connectivity, and aggregator issues</li>
+<li class="spaceB">Performed troubleshooting of customer issues using Oracle SQL Developer, SQL Server Management Studio, soapUI, putty, and LDAP tools</li>
+<li class="spaceB">Coordinated system updates and changes with customers and service providers to enhance system performance and reduce downtime</li>
+<li class="spaceB">Performed QA on change solution packages and confirmed system functionality to minimize production deployment problems</li>
+<li class="spaceB">Investigated Kettle ETL process failures, developed procedures to detect and fix data warehouse corruption</li>
+<li class="spaceB">Provided training on case management and handling of database related issues</li>
+<li class="spaceB">Generated shell scripts to facilitate system troubleshooting and automated repetitive activities</li>
+<li class="spaceB">Created complex SQL queries to extract usage reports for Sales and Billing purposes and to support Adoption team end of month and quarterly reporting needs</li>
+<li class="spaceB">Generated equivalent queries in the OLTP and star schema based data warehouse.  Ported queries from and to Oracle, MSSQL, and PostgreSQL database systems</li>
+<li class="spaceB">Eliminated batch job failures and system outages by creating BASH scripts to properly distribute batch jobs among nodes in a multi-node cluster and to throttle delivery of batch files for processing based on current system memory, record count, and CRON job frequency</li>
+				</ul>
+				</div>
+
+
+
+			<div id="bodySUNW">
+				<h2 class="lhdr">Staff Engineer - Sun Microsystems, 2000-2006</h2>
+				<h3>Public Company, SUNW, Computer Hardware and Software</h3>
+				<img class="mypic" src="images/sun_niagara_chip2.jpg" alt="niagara chip pic" />
+				<p>Implemented and administered project level tools, managed compute resource and filesystem needs, administered database, provided scripting support, performed QA on design release, enhanced management visibility of project status, improved efficiency with CRON jobs and web applications, and collaborated with different functional groups to successfully tapeout three SPARC chips.</p>
+
+				<ul>
+
+
+
+      <li class="spaceA">Provided configuration database management system support from project start through tapeout.  Activities included use of cron jobs, Bourne shell/Perl scripts, AWK, and SED utilities to globally reformat data, to extract and insert information into the central database, to automate routine tasks, to perform QA, sync up multi-site databases, and to troubleshoot issues with user local environments 
+      </li><li class="spaceA">Maintained project file systems locally and at remote Design Center, performing troubleshooting activities to identify source of differences between local and mirrored remote work environments  
+      </li><li class="spaceA">Assured trouble-free project startup by serving as tool champion, training and supporting users on environment setup, ECO process/workflow, database access, bug reporting, and design file release 
+      </li><li class="spaceA">Generated web-based ECO dashboard linked with Siebel based Metrax/Bugzilla database facilitating user access and highlighting issues
+      </li><li class="spaceA">Created automated scripts to sync-up with latest design release files, perform QA checks, and upload test results to the web on a daily basis to provide detailed reports on each design component
+      </li><li class="spaceA">Averted major project setback by writing Perl code to scan through central database files repeatedly to detect and fix corruption arising from check-out/check-in tools prematurely introduced without sufficient testing due to schedule constraints
+      </li><li class="spaceA">Ensured project infrastructure in place to eliminate/minimize project delays by proactively satisfying computing hardware needs, troubleshoot database system problems, and established project work environments
+      </li><li class="spaceA">Produced 20X improvement in check-out and check-in time of SRAM design blocks by creating tool wrappers
+      </li><li class="spaceA">Reduced repeater placement time by 10X and increased utilization rate from 40% to 70% by automating and optimizing repeater bank placement into CPU channels using Perl scripts in lieu of manual placement
+      </li><li class="spaceA">Slashed time 10% for design block release by generating scripts to support lead Mask Designer iterative process in cleaning up design rule check violations 
+      </li><li class="spaceA">Guaranteed design block release quality by performing QA checks on the integration/tapeout release 
+      </li><li class="spaceA">Enhanced management visibility of overall project progress by designing web dashboard to highlight issues/bottlenecks for immediate corrective action 
+      </li><li class="spaceA">Planned and fulfilled database/tool needs of project team by coordinating with management, circuit engineers, mask designers, CAD, DReAM, integration teams, off-site design center, and computer resource group </li>
+      </li><li class="spaceA">Created scripts which performed daily monitoring of project&#8217;s file systems (totaling >2.5 TB), published %usage, capacity, and highest users on the project web page, and generated emails to the project DBA to provide advance warning when a certain threshold has been reached
+				</ul>
+			</div>
+
+
+			<div id="bodyIKOS">
+					<h2 class="lhdr">Sr. Development/QA Function Engineer - IKOS System, 1999-2000</h2>
+					<img class="mypic" src="images/ikos_logo.jpg" alt="ikos logo" />
+					<h3>Public Company, IKOS, Electronic Design Automation (EDA) Software</h3>
+					<p>Administered Sybase database, managed and customized the CRM application, and implemented/administered Cognos report generation tool in support of EDA tool development.  </p>
+				<ul>
+<li class="spaceB">Managed Sybase RDBMS, created stored procedures, managed users, and performed backup and recovery to ensure high availability and quick access to data </li>
+<li class="spaceB">Produced 10X reduction in the effort expended by engineers/managers in generating staff bug reports by integrating Cognos reporting tool with Clarify database, generating SQL queries, and scheduling batch jobs to automate report generation</li>
+<li class="spaceB">Avoided project delays through careful planning and management of system upgrades</li>
+<li class="spaceB">Developed and programmed business rules into CRM tool using ClearBasic to ensure software design updates are processed efficiently through product management, software engineering, and QA organizations</li>
+<li class="spaceB">Maintained internal QA web page incorporating a web-based SQL query tool to improve sales/engineering customer response time</li>
+				</ul>
+				</div>
+
+
+				<div id="bodyOther">
+					<h2 class="lhdr">Other Accomplishments</h2>
+					<h3></h3>
+					<p></p>
+					<ul>
+
+						<li class="spaceB">Patent submission for &quot;Method and Apparatus for Placing Repeater Banks in Integrated Circuit Design&quot;, 2003</li>
+						<li class="spaceB">Identified suitable hardware and assembled multiple desktop workstations for Oracle database evaluation</li>
+						<li class="spaceB">Generated user-managed backups and recovery on a test database</li>
+						<li class="spaceB">Implemented RMAN for backup and recovery operations on a test database</li>
+						<li class="spaceB">Created Oracle Data Guard physical standby database and performed successful switchover on a test database</li>
+						<li class="spaceB">Installed VMWare Ubuntu Linux guest OS on Windows host with LAMP development environment setup</li>
+						<li class="spaceB">Established internet-accessible Apache web server in virtual Linux environment</li>
+                                                <li class="spaceB">Setup triple boot OS configuration (Windows Vista, Ubuntu Linux, and OpenSolaris)</li>
+						<li class="spaceB">Completed online Harvard course - Building Dynamic Websites</li>
+						<li class="spaceB"><a href="/afs10/afs.php">Developed Web Site utilizing AJAX, jQuery, PHP, CSS, Javascript, Photoshop generated graphics, and centralized quote form configuration file for maintainability and scalability</a></li>
+						<li class="spaceB">Configured and built server class computer system with ESXi5 installation and Linux VMs</li>
+						<li class="spaceB">Licensed Professional Mechanical Engineer, valid to 9/30/16</li>
+
+						<li class="spaceB">Experienced in Pro-Engineer solid modeling</li>
+
+						<li class="spaceB">Skilled in application of ANSI-Y14.5 1982 Geometric Dimensioning and Tolerancing</li>
+
+						<li class="spaceB">Design and analysis experience with cluster tool wafer handling systems</li>
+						<li class="spaceB"><a href='Git_Basic_Cmds.txt'>Basic Git Commands</a></li>
+						<li class="spaceB"><a href='Useful_Links.html'>Useful Programming Links</a></li>
+
+					</ul>
+				
+				</div>
+			
+
+			</fieldset>
+	</div>
+</div>
+
+</body>
+
+</html>

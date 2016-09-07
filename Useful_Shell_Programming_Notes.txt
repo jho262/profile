@@ -1,0 +1,31 @@
+Below are some useful notes for shell programming and debugging.  Although the information can 
+be found on the web, it is compiled here for quick reference.
+
+
+Strange output from "echo" command
+==================================
+
+Within a shell script, a large number of variables were being printed with the echo command.
+Some of the variables contained text that were extracted from logs (apparently, this text
+contained the LF character).  In reviewing the output produced by the echo command, it was 
+found that some of the latter variables were overwriting the text of the earlier variables.
+
+The problem was found to be the existence of the LF character $'\r' in some of the variables.
+Refer to http://stackoverflow.com/questions/21909015/strange-echo-output for a detailed 
+explanation of this issue.
+
+To see the LF character contained in the linux variable, do the following:
+  printf '%q\n' "$variable"
+
+To remove the $'\r' LF character, do the following:
+  variable=${variable//$'\r'}
+
+
+Sample expect script
+====================
+Expect scripts are used as a substitute for ssh keys.  They allow you to connect to a remote
+server and execute commands without being prompted interactively for a login and password.
+
+The below bash script invokes expect to connect to a remote server in order to collect status 
+information and writes to a local file.
+

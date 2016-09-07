@@ -1,0 +1,118 @@
+<html>
+<head><title>Sample Shell Script</title></head>
+<body>
+<h1>Sample Shell Script</h1>
+<br/>
+<p>
+#!/bin/sh<br />
+<br />
+# genTstmp.sh - outputs complete time intervals to the degree specified. <br />
+#               output is useful to fill missing time interval entries extracted from log files.<br />
+# author  :  me<br />
+# created :  2014-01-01<br />
+# modified:  2014-11-30<br />
+#   G. Lee  (1) fixed bug in usage function ...<br />
+
+function usage<br />
+{<br />
+    echo "$PROG [-h] [-t t_parameter]<br />
+    Examples:  $PROG -h                   -&gt; prints this help message.<br />
+               $PROG -t hour              -&gt; prints out each hour of the day, hh24<br />
+               $PROG -t minute            -&gt; prints out each minute of the day, hh24:mi<br />
+               $PROG -t second            -&gt; prints out each second of the day, hh24:mi:ss<br />
+  "<br />
+<br />
+    exit 0<br />
+}<br />
+<br />
+function format_time<br />
+{<br />
+    num=$1<br />
+    if [ $num -lt 10 ];<br />
+    then<br />
+      echo "0$num"<br />
+    else<br />
+      echo $num<br />
+    fi<br />
+    exit 0<br />
+}<br />
+<br />
+#############################<br />
+# MAIN PROGRAM<br />
+#############################<br />
+PROG=`basename $0`<br />
+E_MISSING_ARG=1<br />
+E_UNK_ARG=2<br />
+E_INVALID_PARAM=3<br />
+<br />
+# set script environment variables<br />
+#. $HOME/.myEnvVars<br />
+<br />
+# check if no args<br />
+if [ $# -eq 0 ];<br />
+then<br />
+  usage<br />
+  exit $E_MISSING_ARG<br />
+fi<br />
+<br />
+# process command line arguments<br />
+while [ "$1" != "" ];<br />
+do<br />
+   case $1 in<br />
+      -h | --help ) usage<br />
+                    exit 0<br />
+                    ;;<br />
+      -t ) shift<br />
+           inc=$1<br />
+           echo $inc | egrep '^hour|^minute|^second' &gt; /dev/null 2&gt;&amp;1<br />
+           if [ $? -ne 0 ];<br />
+           then<br />
+             usage<br />
+             exit $E_INVALID_PARAM<br />
+           fi<br />
+           ;;<br />
+       * ) usage<br />
+           exit $E_UNK_ARG<br />
+   esac<br />
+   shift<br />
+done<br />
+<br />
+<br />
+h=0<br />
+m=0<br />
+s=0<br />
+while [ $h -lt 24 ];<br />
+do<br />
+  th=`format_time $h`<br />
+<br />
+  if [ "$inc" == "hour" ];<br />
+  then<br />
+    echo $th<br />
+  else  ## $inc==minute||$inc==second<br />
+    while [ $m -lt 60 ];<br />
+    do<br />
+      tm=`format_time $m`<br />
+<br />
+      if [ "$inc" == "minute" ];<br />
+      then<br />
+        echo "$th:$tm"<br />
+      else   ##  $inc==second<br />
+        while [ $s -lt 60 ];<br />
+        do<br />
+          ts=`format_time $s`<br />
+          echo "$th:$tm:$ts"<br />
+          s=$(($s+1))<br />
+        done<br />
+      fi<br />
+      m=$(($m + 1))<br />
+      s=0<br />
+    done<br />
+  fi<br />
+<br />
+  h=$(($h + 1))<br />
+  m=0<br />
+done<br />
+<br />
+exit 0<br />
+</body>
+</html>
