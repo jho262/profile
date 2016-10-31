@@ -1,0 +1,61 @@
+body {
+  width: 1000px;
+}
+
+div#all {
+  background-color: ivory;
+  width: 1000px;
+  height: 4000px;
+}
+
+div#left {
+  margin: -16 0 0 0;
+  background-color: lightblue;
+  padding: 10 8 0 0;
+  width: 200px;
+  height: 3950px;
+  float: left;
+}
+
+div#main {
+  margin: -16 0 0 0;
+  padding: 10 5 0 10;
+  background-color: whitesmoke;
+  width: 777px;
+  height: 3950px;
+  float: left;
+}
+
+h1 {
+  background-color: navy;
+  height: 50px;
+  width: 1000px;
+  text-align: center;
+  padding: 25 0 0 0; 
+  font-size: 24px;
+  color: white;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+h4 {
+  font-size: 14px;
+  margin: 0 0 0 -10px;
+}
+
+ul#llinks {
+  list-style-type: decimal;
+  font-size: 14px;
+}
+
+ul#llinks li {
+  padding: 8 0 0 0;
+}
+
+div#left p {
+  padding: 0 0 0 10;
+  font-size: 16px;
+}
+
