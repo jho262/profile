@@ -20,6 +20,7 @@ pipeline {
         stage ('Report_Valid_Files') {
             steps {
                 println "... if PROD deployment succeeds, executing report valid files stage"
+                ls -lrt
             }
         }
         stage ('Report_Obsolete_Files') {
