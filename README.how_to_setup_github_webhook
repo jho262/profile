@@ -1,0 +1,93 @@
+System:
+   MacOS High Sierra v10.13.4
+   Jenkins v2.222.1 running on localhost
+   GitHub jho262/profile repository
+
+
+Setup GitHub Account and local development environment
+  1. Go to github.com
+  2. Register for an account
+  3. Create a repository
+  4. Generate ssh keys and load public key to github
+  5. Create a git local repository from the terminal command line
+     a. mkdir ~/myproject
+     b. cd ~/myproject
+     c. git init
+     d. git remote add origin "https://github.com/jho262/profile"
+     e. echo "file 1" > file1.txt
+     f. git add file1.txt
+     g. git commit -m "file1 initial checkin"
+     h. git push origin master
+     i. Open browser and go to https://github.com/jho262/profile to confirm file1.txt exists
+
+
+Setup a freestyle job in Jenkins
+  1. Login to Jenkins
+  2. Install Jenkins Git plugin
+  3. Navigate to the desired folder
+  4. Click "New Item" and enter a name for the project and select "Freestyle Project"
+  5. Click on "Configure" 
+  6. Under "Source Code Management", select "Git".
+     a. For the repository, enter "https://github.com/jho262/profile.git"
+     b. No credentials needed
+     c. For "Branch Specifier", set to "*/master"
+     d. Under "Build Triggers", click "GitHub hook trigger for GITScm polling"
+     e. Under "Build", select "Execute shell" and enter the following statements in the "Command" field:
+        pwd
+        ls -l
+        echo "Testing Git Webhook"
+     f. Click "Apply" and "Save"
+     g. Click "Build Now" to run the job.
+        Confirm successful pull of github files by viewing the console output.
+
+
+
+Setup a pipeline job in Jenkins
+
+
+
+Expose your local jenkins server to the internet using ngrok
+  1. Download ngrok from https://ngrok.com/download
+  2. Extract the zip file
+  3. Copy the ngrok program from the Downloads directory to the Applications directory
+     cp -p ~/Downloads ~/Applications
+  4. Launch ngrok
+     ~/Applications/ngrok http 8080
+  5. In the terminal window, some URLs should be displayed (e.g. https://46bb7d12e856.ngrok.io)
+  6. From your smart phone, launch the browser and type the ngrok url to confirm the jenkins login page is successfully displayed.
+
+
+Configure a webhook in github
+  1. Launch browser and enter your github url (e.g. https://github.com/jho262/profile)
+  2. Click on "Settings"
+  3. Click on "Webhooks"
+  4. Click "Add webhook"
+  5. Enter the ngrok url that exposes your application to the public (i.e. copy the https://.... entry that is 
+     displayed in the terminal window where you executed the ngrok command)
+  6. For the "Payload URL", enter the ngrok url (e.g. https://46bb7d12e856.ngrok.io/github-webhook/)
+     Note:  You need to append "/github-webhook/" to the end of the ngrok url ... the trailing / is important)
+  7. Leave "Secret" blank
+  8. If your jenkins application is not using SSL certs, then click "Disable" for the "SSL verification".
+  9. For "Content type", set to default "application/x-www-form-urlencoded"
+ 10. Click "Just the push event."
+ 11. Click "Active"
+ 12. Click "Update webhook" and confirm success.
+     a. If no success, then make corrections and click "Update webhook".
+     b. Click on the latest "Recent Deliveries" item  and select "Re-deliver" to check if response succeeds.
+
+
+
+Test the webhook works
+  1. Launch terminal window
+  2. navigate to your project directory
+     cd ~/myproject
+  3. create a file2.txt
+  4. git add file2.txt
+  5. git commit -m "file2 - initial checkin" 
+  6. git push origin master
+  7. Login to jenkins
+  8. Navigate to your project
+  9. View the console page to confirm that the jenkins job launched upon github repository update.
+
+
+
