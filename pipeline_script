@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage ('QA_Deploy') {
+            steps {
+                println "... executing QA deployment stage"
+            }
+        }
+        stage ('QA_Test') {
+            steps {
+                println "... executing QA test stage: (1) test home page and (2) test referenced links"
+            }
+        }
+        stage ('PROD_Deploy') {
+            steps {
+                println "... if QA test stage succeeds, executing PROD deployment stage"
+            }
+        }
+        stage ('Report_Valid_Files') {
+            steps {
+                println "... if PROD deployment succeeds, executing report valid files stage"
+            }
+        }
+        stage ('Report_Obsolete_Files') {
+            steps {
+                println "... executing report obsolete files stage"
+            }
+        }
+    }
+}
