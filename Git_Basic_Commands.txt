@@ -1,0 +1,57 @@
+For a good tutorial on Git, see DevOps Tutorial for Beginners Edureka at approximately 1 hour into the video ( https://www.youtube.com/watch?v=hQcFE0RD0cQ )
+
+
+
+Getting started with GIT
+  - need a central repository
+  - need a local repository
+
+Create a central repository
+  - go to GitHub and create an account
+  - click "Start Project" and create your new project at GitHub
+
+Create a local repository
+  - create a directory:  mkdir my_project
+  - cd my_project
+  - git init   -> a .git directory should be created
+
+Link your local repository with the central repository
+  - git remote add <local_name_for_central_repository> <link_to_central_repository>  
+    e.g. git remote add origin https://github.com/jamesho
+
+Get all files from the central repository
+  - git pull origin master
+
+Show status of untracked and tracked files in local repository
+  - git status
+
+Add file(s) to index (i.e. begin tracking the file)
+  - git add <filename>
+  - git add -A          -> tracks multiple files
+
+Commit the file into the local repository (i.e. create a snapshot of your local repository)
+  - git commit -m "checkin comment"      -> commits a single file
+  - git commit -a -m "checkin comment"   -> commits mutltiple files with message.  The -a option also adds modified files to index.
+                                            The -a option does not add untracked files to index and commits.
+
+Show history
+  - git log
+
+Perform parallel development
+  - git branch firstbranch     -> creates a branch called firstbranch; local repository will now show firstbranch files
+  - git checkout firstbranch   -> switches from current branch to firstbranch; local repository will now show firstbranch files
+                                  creating a file in firstbranch will not be available in the master until a merge is done
+  - git checkout master        -> switches from current branch to the master branch; master should always be the destination branch for merging
+  - git merge firstbranch      -> merges firstbranch to master branch
+  - git rebase firstbranch     -> at 2:07:30 into video.  Rebasing creates a much cleaner project history.  Rebasing will add the firstbranch changes
+                                  to the tail of the master branch and show the history as a sequential development.  e.g. let's say that you
+                                  created firstbranch off of the master commit1 (C1) version. You then make changes to firstbranch files and merge
+                                  them to the master.  While firstbranch changes were being made, another person is making changes to the master
+                                  creating a master C2 version.  When you merge the firstbranch changes into master, you will get a C3 version that
+                                  is also attached to the C1 commit version.  By re-basing, the C3 version is attached to the tail of the C2 commit
+                                  master version forming a linear sequence of commits.
+
+Checkin to the central repository
+  - setup ssh keys
+  - git push origin firstbranch   -> first switch to firstbranch and then execute the git push command to create a firstbranch in the central repository
+  - git push orign master         -> first switch to master and then execute the git push command to update central repository master
