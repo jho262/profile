@@ -4,9 +4,15 @@ pipeline {
     stages {
         stage ('QA_Deploy') {
             steps {
-              withCredentials([string(credentialsId: 'secret_web1', variable: 'SECRETTEXT')]){
-              sh 'echo "My secret text is ${SECRETTEXT}"'
-                println "... executing QA deployment stage"
+              withCredentials([
+                string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
+                string(credentialsId: 'secret_host', variable: 'SECRETHOST'),
+                string(credentialsId: 'secret_webuser', variable: 'SECRETKEY')
+              ]){
+                  sh 'echo "My secret text is ${SECRETUSER}"'
+                  sh 'echo "My secret text is ${SECRETHOST}"'
+                  sh 'echo "My secret text is ${SECRETKEY}"'
+                  println "... executing QA deployment stage"
               }
             }
         }
