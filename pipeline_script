@@ -9,9 +9,7 @@ pipeline {
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
-                  sh 'echo "My secret text is ${SECRETUSER}"'
-                  sh 'echo "My secret text is ${SECRETHOST}"'
-                  sh 'echo "My secret text is ${SECRETKEY}"'
+                  sh 'scp -p -i ${SECRETKEY}  myedu.html ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/qa'
                   println "... executing QA deployment stage"
               }
             }
