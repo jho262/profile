@@ -1,5 +1,11 @@
 pipeline {
     agent any
+
+    node {
+        withCredentials([string(credentialsIs: 'mytestkey', variable: 'SECRETFILE')]){
+            echo "My secret file is '${SECRET}'"
+        }
+    }
     
     stages {
         stage ('QA_Deploy') {
