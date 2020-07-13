@@ -6,8 +6,8 @@ pipeline {
             steps {
               withCredentials([
                 string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
-                string(credentialsId: 'secret_host', variable: 'SECRETHOST'),
-                string(credentialsId: 'secret_webuser', variable: 'SECRETKEY')
+                string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
+                string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
                   sh 'echo "My secret text is ${SECRETUSER}"'
                   sh 'echo "My secret text is ${SECRETHOST}"'
