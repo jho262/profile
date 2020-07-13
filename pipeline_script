@@ -14,11 +14,8 @@ pipeline {
         }
         stage ('PROD_Deploy') {
             steps {
-                bash '''
-                #!/bin/bash
-                echo "... printing list of files from github"
-                ls -lrt
-                '''
+                sh 'echo "... printing list of files from github"'
+                sh 'ls -lrt'
                 println "... if QA test stage succeeds, executing PROD deployment stage"
             }
         }
