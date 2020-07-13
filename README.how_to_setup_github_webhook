@@ -7,14 +7,14 @@ System:
 Setup GitHub Account and local development environment
   1. Go to github.com
   2. Register for an account
-  3. Create a repository
+  3. Create a repository (e.g jho262)
   4. Generate ssh keys and load public key to github
   5. Create a git local repository from the terminal command line
      a. mkdir ~/myproject
      b. cd ~/myproject
      c. git init
      d. git remote add origin "https://github.com/jho262/profile"
-     e. echo "file 1" > file1.txt
+     e. Create a sample file to confirm local repository link to central github repository:  echo "file 1" > file1.txt
      f. git add file1.txt
      g. git commit -m "file1 initial checkin"
      h. git push origin master
@@ -27,22 +27,70 @@ Setup a freestyle job in Jenkins
   3. Navigate to the desired folder
   4. Click "New Item" and enter a name for the project and select "Freestyle Project"
   5. Click on "Configure" 
-  6. Under "Source Code Management", select "Git".
-     a. For the repository, enter "https://github.com/jho262/profile.git"
-     b. No credentials needed
-     c. For "Branch Specifier", set to "*/master"
-     d. Under "Build Triggers", click "GitHub hook trigger for GITScm polling"
-     e. Under "Build", select "Execute shell" and enter the following statements in the "Command" field:
+     a. Under "Source Code Management", select "Git".
+     b. For the repository, enter "https://github.com/jho262/profile.git"
+     c. No credentials needed
+     d. For "Branch Specifier", set to "*/master"
+     e. Under "Build Triggers", click "GitHub hook trigger for GITScm polling"
+     f. Under "Build", select "Execute shell" and enter the following statements in the "Command" field:
         pwd
         ls -l
         echo "Testing Git Webhook"
-     f. Click "Apply" and "Save"
-     g. Click "Build Now" to run the job.
+     g. Click "Apply" and "Save"
+     h. Click "Build Now" to run the job.
         Confirm successful pull of github files by viewing the console output.
 
 
 
 Setup a pipeline job in Jenkins
+  1. Login to Jenkins
+  2. Install Jenkins Git plugin
+  3. Navigate to the desired folder
+  4. Click "New Item" and enter a name for the project and select "Pipelin"
+  5. Click on "Configure"
+     a. Under "Build Triggers", click "GitHub hook trigger for GITScm polling"
+     b. Under "Pipeline", for the "Definition" field, select "Pipeline script from SCM".
+     c. For "SCM" field, select "Git".
+     d. For the "Repository URL", enter "https://github.com/jho262/profile.git"
+     e. For credentials, leave as "- none -".
+     f. For "Branch Specifier", set to "*/master"
+     g. For "Script Path", enter the name of you script (e.g pipeline_script).  This is the filename of the script that is
+        checked into GitHub.  It will contain the pipeline commands to execute.  For example, in your local git repository,
+        the pipeline_script file would contain:
+
+        pipeline {
+            agent any
+            
+            stages {
+                stage ('QA_Deploy') {
+                    steps {
+                        println "... executing QA deployment stage"
+                    }
+                }
+                stage ('QA_Test') {
+                    steps {
+                        println "... executing QA test stage: (1) test home page and (2) test referenced links"
+                    }
+                }
+                stage ('PROD_Deploy') {
+                    steps {
+                        println "... if QA test stage succeeds, executing PROD deployment stage"
+                    }
+                }
+                stage ('Report_Valid_Files') {
+                    steps {
+                        println "... if PROD deployment succeeds, executing report valid files stage"
+                    }
+                }
+                stage ('Report_Obsolete_Files') {
+                    steps {
+                        println "... executing report obsolete files stage"
+                    }
+                }
+            }
+        }
+
+
 
 
 
@@ -62,18 +110,17 @@ Configure a webhook in github
   2. Click on "Settings"
   3. Click on "Webhooks"
   4. Click "Add webhook"
-  5. Enter the ngrok url that exposes your application to the public (i.e. copy the https://.... entry that is 
-     displayed in the terminal window where you executed the ngrok command)
-  6. For the "Payload URL", enter the ngrok url (e.g. https://46bb7d12e856.ngrok.io/github-webhook/)
-     Note:  You need to append "/github-webhook/" to the end of the ngrok url ... the trailing / is important)
-  7. Leave "Secret" blank
-  8. If your jenkins application is not using SSL certs, then click "Disable" for the "SSL verification".
-  9. For "Content type", set to default "application/x-www-form-urlencoded"
- 10. Click "Just the push event."
- 11. Click "Active"
- 12. Click "Update webhook" and confirm success.
-     a. If no success, then make corrections and click "Update webhook".
-     b. Click on the latest "Recent Deliveries" item  and select "Re-deliver" to check if response succeeds.
+     a. For the "Payload URL", enter the ngrok url that exposes your jenkins application to the public.  This is shown
+        in the terminal window where you executed ./ngrok http 8080.  (e.g. https://46bb7d12e856.ngrok.io/github-webhook/).
+        Note:  You need to append "/github-webhook/" to the end of the ngrok url ... the trailing / is important)
+     b. Leave "Secret" blank
+     c. If your jenkins application is not using SSL certs, then click "Disable" for the "SSL verification".
+     d. For "Content type", set to default "application/x-www-form-urlencoded"
+     e. Click "Just the push event."
+     f. Click "Active"
+     g. Click "Update webhook" and confirm success.
+        - If no success, then make corrections and click "Update webhook".
+        - Click on the latest "Recent Deliveries" item and select "Re-deliver" to check if response succeeds.
 
 
 
