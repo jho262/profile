@@ -1,9 +1,6 @@
 pipeline {
     agent any
 
-    node {
-    }
-    
     stages {
         stage ('QA_Deploy') {
           withCredentials([string(credentialsIs: 'mytestkey', variable: 'SECRETFILE')]){
