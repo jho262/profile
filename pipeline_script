@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage ('QA_Deploy') {
             steps {
-              withCredentials([string(credentialsId: 'mytestkey', variable: 'SECRETFILE')]){
+              withCredentials([string(credentialsId: 'secretweb1', variable: 'SECRETTEXT')]){
                 println "... executing QA deployment stage"
               }
             }
