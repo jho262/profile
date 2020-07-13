@@ -5,6 +5,7 @@ pipeline {
         stage ('QA_Deploy') {
             steps {
               withCredentials([string(credentialsId: 'secret_web1', variable: 'SECRETTEXT')]){
+              sh 'echo "My secret text is ${SECRETTEXT}"'
                 println "... executing QA deployment stage"
               }
             }
