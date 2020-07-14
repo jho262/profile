@@ -9,7 +9,7 @@ pipeline {
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
-                  sh 'ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/qa; done'
+                  sh 'incr=3; waitfor=1; ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do waitfor=$(($waitfor+$incr)); $scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/qa; done; sleep $waitfor'
 
                   println "... executing QA deployment stage"
               }
