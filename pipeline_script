@@ -17,7 +17,7 @@ pipeline {
               ]){
 //   waittime is used because webhost site closes scp connection when repeated file transfers occur too quickly
 //                  sh 'ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do waittime=$(($RANDOM % 15)); sleep $waittime; scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
-                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | while read f; do waittime=$(($RANDOM % 15)); scp -p -i ${SECRETKEY} ../$f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; sleep $waittime; done'
+                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; i=10; waitfloor=5; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | while read f; do waittime=$(($(($RANDOM % 15))+$waitfloor)); scp -p -i ${SECRETKEY} ../$f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; sleep $waittime; i=$(($i+1)); waitfloor=$(($i/5)); done'
 
                   println "... executing QA deployment stage"
               }
