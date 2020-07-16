@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage ('Pre-QA_Deployment_Missing_File_Check') {
+            steps {
+                println "... executing pre-QA_deployment check for missing files"
+                sh './qa_chk.sh index.html'
+            }
+        }
         stage ('QA_Deploy') {
             steps {
               withCredentials([
@@ -9,7 +15,8 @@ pipeline {
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
-                  sh 'incr=3; waitfor=1; ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do sleep $waitfor; waitfor=$(($waitfor+$incr)); scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/qa; done'
+//                  sh 'ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do waittime=$(($RANDOM % 15)); sleep $waittime; scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
+                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | while read f; do waittime=$(($RANDOM % 15)); scp -p -i ${SECRETKEY} ../$f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
 
                   println "... executing QA deployment stage"
               }
