@@ -141,14 +141,8 @@ echo $top_html >> references.flist
 recurse $top_html
 
 
-
 ## find all files in current directory
 find $DOCROOT -type f | egrep -v '/\.git/|cksum$|flist$|qa_chk.sh|sync.sh|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
-
-
-## identify files that are not part of the parent html hierarchy (i.e. files that can be deleted or archived)
-echo -e "\n--- UNUSED FILES ---"
-comm -23 wrkdir.all.flist $BASE_DIRNAME.flist
 
 
 ## find all files that meet the following 2 critera:
@@ -157,6 +151,11 @@ comm -23 wrkdir.all.flist $BASE_DIRNAME.flist
 grep "$DOCROOT" references.flist  | awk '{print $1}' | sort -u | sed "s#$DOCROOT/##" > $BASE_DIRNAME.flist
 echo -e "\n--- REFERENCED FILES ---"
 cat $BASE_DIRNAME.flist
+
+
+## identify files that are not part of the parent html hierarchy (i.e. files that can be deleted or archived)
+echo -e "\n--- UNUSED FILES ---"
+comm -23 wrkdir.all.flist $BASE_DIRNAME.flist
 
 
 

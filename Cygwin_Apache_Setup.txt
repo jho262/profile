@@ -1,0 +1,65 @@
+NOTE:  This procedure came from http://techne.alaya.net/?p=13579.  
+       It is edited to include some additional steps to get apache to run as a service
+
+
+Installing cygwin on Windows 7 64 bit:
+
+1. Download setup-x86_64.exe from https://cygwin.com/install.html.
+
+2. Install desired packages, see below for the ones required to setup Apache and PHP.
+
+3. Launch cygwin command window.
+
+4. If you determine that you need some additional packages installed for cygwin, just run execute the setup-x86_64.exe setup program again and select the missing packages.
+
+	- Note:  use http:/mirrors.sonic.net as this is for CA
+
+
+Setting up Apache 2.4 and PHP under Cygwin (updated) (Quick & easy Cygwin Apache/PHP setup guide)
+Note: This information is updated to include a recent change to Apache 2.4 for Cygwin. The old command to configure the Apache web server /usr/sbin/httpd2-config is now obsolete. The new command is /etc/rc.d/init.d/httpd install
+
+Also note that the old Cygwin package apache2-mod_php5 is now called httpd-mod_php5
+
+See below for full instructions.
+
+1. Install Cygwin or Cygwin64
+
+2. During install, select the following packages to install:
+
+httpd libapr1-devel libaprutil1-devel httpd-mod_php5
+
+If you want other optional PHP components, select those also. Here are a few popular examples:
+
+php-fileinfo php-mysqli php-gd php-Archive_Tar php-bz2 php-zlib
+
+3. After the install is finished, open a Cygwin terminal as Administrator and run:
+
+cygserver-config (answer “yes” to prompt)
+
+/etc/rc.d/init.d/httpd install
+
+4. Start cygserver and httpd:
+
+From within the same Cygwin terminal running as Administrator, run:
+
+cygrunsrv -S cygserver
+
+cygrunsrv -S httpd
+	--> Added steps:  modify /etc/httpd/conf/httpd.conf file
+		(a) Enable "LoadModule slotmem_shtm_module modules/mod_slote_shm.so"
+		(b) Enable "LoadModule heartmonitor_module modules/mod_heartmonitor.so"
+
+5. Everything should be working. If there was an error at startup look at /var/log/httpd/error_log
+
+6. Reload Apache with the new configuration:
+
+from the Administrator terminal run:
+
+/etc/rc.d/init.d/httpd reload
+	--> If you get an error such as "Reloading httpd daemon configuration: unsupported. /etc/rc.d/httpd restart".  Try /etc/rc.d/init.d/httpd start
+
+8. The document root is at:
+
+/srv/www/htdocs/
+
+9. Open a browser and enter localhost/indexhtml.  You should see "It Works!" displayed in the browser.
