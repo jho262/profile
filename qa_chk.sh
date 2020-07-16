@@ -80,12 +80,16 @@ echo "... prefix = $prefix" >> tmp.flist
       ## if not leaf, descend down hierarchy.  else, echo $file
       grep $file references.flist >/dev/null
       dup_rc=$?
+      file $file | grep ASCII >/dev/null
+      ascii_rc=$?
       if [[ -e $file ]];then
-        # check if duplicate reference
-        grep "$file" references.flist >/dev/null
-        if [[ $? -ne 0 ]];then
+        ## check if duplicate reference
+        if [[ $dup_rc -ne 0 ]];then
           echo $file >> references.flist
-          recurse $file
+          ## check if ascii file
+          if [[ $ascii_rc -eq 0 ]];then
+            recurse $file
+          fi
         fi
       else
         if [[ $file == "http"* ]];then
