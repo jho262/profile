@@ -32,7 +32,6 @@ function recurse {
       echo $file | grep '^\.\./' >/dev/null
       starts_with_dotdot_rc=$?
       
-
       ## file starts with http
       if [[ $starts_with_http_rc -eq 0 ]];then
 echo "... starts with http" >> tmp.flist
@@ -160,6 +159,7 @@ echo -e "\n--- REFERENCED FILES ---"
 cat $BASE_DIRNAME.flist
 
 
+
 ## identify files that are needed by the parent html file which are missing
 comm -13 wrkdir.all.flist $BASE_DIRNAME.flist > missing.flist
 
@@ -176,6 +176,4 @@ if [[ $? -eq 0 ]];then
   grep "^$BASE_DIRNAME" missing.flist
   exit 1
 fi
-
-
 
