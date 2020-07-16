@@ -16,8 +16,8 @@ pipeline {
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
 //   waittime is used because webhost site closes scp connection when repeated file transfers occur too quickly
-//                  sh 'ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do waittime=$(($RANDOM % 25)); sleep $waittime; scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
-                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | while read f; do waittime=$(($RANDOM % 25)); scp -p -i ${SECRETKEY} ../$f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
+//                  sh 'ls -lrt | egrep -v "^d|list\$|^total" | sed "s#^.* ##" | while read f; do waittime=$(($RANDOM % 15)); sleep $waittime; scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; done'
+                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | while read f; do waittime=$(($RANDOM % 15)); scp -p -i ${SECRETKEY} ../$f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA; sleep $waittime; done'
 
                   println "... executing QA deployment stage"
               }
