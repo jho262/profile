@@ -159,7 +159,8 @@ cat $BASE_DIRNAME.flist
 
 ## identify files that are not part of the parent html hierarchy (i.e. files that can be deleted or archived)
 echo -e "\n--- UNUSED FILES ---"
-comm -23 wrkdir.all.flist $BASE_DIRNAME.flist > unused.flist
+>unused.flist
+comm -23 wrkdir.all.flist $BASE_DIRNAME.flist | tee -a unused.flist
 
 
 
@@ -186,7 +187,9 @@ fi
 cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f; do dirname $f; done | sort -u | egrep -v '^ *$|^\.$' | while read dir;do echo "mkdir -p archive/$dir"; done | awk 'BEGIN{print "#!/bin/bash\n"}{print $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
 cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | awk '{print "mv", $0, "archive/"}END{print ""}'  >> archive_$BASE_DIRNAME.unused.sh
 cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | awk '{print "git add archive/" $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
-echo 'git commit -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
+echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
 echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
+chmod 755 archive_$BASE_DIRNAME.unused.sh
 
+echo "If you want to archive all unused files (i.e. move them to the archive directory), use `pwd`/archive_$BASE_DIRNAME.unused.sh"
 
