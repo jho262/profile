@@ -145,7 +145,7 @@ echo $top_html >> references.flist
 recurse $top_html
 
 
-## find all files in current directory
+## find all files in current directory structure excluding files check scripts and tmp files created by scripts
 find $DOCROOT -type f | egrep -v '/\.git/|cksum$|flist$|qa_chk.sh|sync.sh|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
 
 
@@ -159,7 +159,7 @@ cat $BASE_DIRNAME.flist
 
 ## identify files that are not part of the parent html hierarchy (i.e. files that can be deleted or archived)
 echo -e "\n--- UNUSED FILES ---"
-comm -23 wrkdir.all.flist $BASE_DIRNAME.flist
+comm -23 wrkdir.all.flist $BASE_DIRNAME.flist > unused.flist
 
 
 
@@ -179,4 +179,14 @@ if [[ $? -eq 0 ]];then
   grep "^$BASE_DIRNAME" missing.flist
   exit 1
 fi
+
+
+
+## prepare a tmp script that will move unused files to archive directory, checks them into github, and deletes original file locations
+cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f; do dirname $f; done | sort -u | egrep -v '^ *$|^\.$' | while read dir;do echo "mkdir -p archive/$dir"; done | awk 'BEGIN{print "#!/bin/bash\n"}{print $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
+cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | awk '{print "mv", $0, "archive/"}END{print ""}'  >> archive_$BASE_DIRNAME.unused.sh
+cat unused.flist | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | awk '{print "git add archive/" $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
+echo 'git commit -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
+echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
+
 
