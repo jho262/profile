@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>SETUP AMP DEVELOPMENT ENVIRONMENT</title>
+</head>
+<body>
+<h2>SETUP APACHE, MYSQL, & PHP (AMP) DEVELOPMENT ENVIRONMENT ON MAC OS X 10.10</h2>
+<fieldset>
+<p>With MAC OS X 10.10 Yosemite, Apache 2.4 and PHP 5.5 is pre-installed.</p>
+<h4>The below procedure was obtained from 
+<a href='https://jason.pureconcepts.net/2014/11/install-apache-php-mysql-mac-os-x-yosemite/' target='_blank'>https://jason.pureconcepts.net/2014/11/install-apache-php-mysql-mac-os-x-yosemite/</a>
+The steps to setup Apache and PHP are re-iterated here to be part of a complete procedure for setting up your Mac OS X 10.10 Yosemite system for testing Apache-MySQL-PHP web development, Hadoop, and Talend ETL.</h4>
+
+<ul type=‘circle’>
+   
+    <li>Start up apache web server:  &nbsp; &nbsp; apachectl start</li>
+    <li>Confirm it is working by entering &quot;localhost&quot; in browser.  A web page displaying the words &quot;It Works!&quot; should be displayed.</li>
+    <li>Check apache version:  &nbsp; &nbsp; httpd -v<br /> &nbsp; &nbsp; The apache version should be 2.4.*</li>
+    <li>Determine what is the document root directory location by grepping for &quot;DocumentRoot&quot; in the file /etc/apache2/httpd.conf<br /> &nbsp; &nbsp; In this case, it should be /Library/WebServer/Documents/</li>
+    <li>Create another web root directory, Sites</li>
+	<ul type=‘square’>
+	    <li>mkdir ~jamesh/Sites</li>
+	    <li>vi /etc/apache2/users/jamesh.conf<br />
+ &nbsp; &nbsp; &nbsp; &lt;Directory &quot;/Users/jamesh/Sites/&quot;&gt; <br />
+&nbsp; &nbsp; &nbsp; nbsp; &nbsp; &nbsp; All  <br />
+&nbsp; &nbsp; &nbsp; nbsp; &nbsp; &nbsp; Indexes MultiViews FollowSymLinks  <br />
+&nbsp; &nbsp; &nbsp; nbsp; &nbsp; &nbsp; all granted  <br />
+&nbsp; &nbsp; &nbsp; &lt;/Directory&gt;
+</li>
+	    <li>chmod 644 jamesh.conf </li>
+	    <li>vi /etc/apache2/httpd.conf <br />
+LoadModule authz_core_module libexec/apache2/mod_authz_core.so <br />
+LoadModule authz_host_module libexec/apache2/mod_authz_host.so <br />
+LoadModule userdir_module libexec/apache2/mod_userdir.so <br />
+LoadModule php5_module libexec/apache2/libphp5.so <br />
+Include /private/etc/apache2/extra/httpd-userdir.conf
+</li>
+
+	    <li>vi /etc/apache2/extra/httpd-userdir.conf and uncomment:<br/>
+&nbsp; &nbsp; &nbsp; /private/etc/apache2/users/*.conf</li>
+	    <li>restart apache:  &nbsp; apachectl restart</li>
+	    <li>enter localhost/~jamesh &nbsp; &nbsp; A page should display showing &quot;Index of /~jamesh&quot;</li>
+        </ul>
+	    <li>To allow any .htaccess files to override defaults, vi httpd.conf<br />
+&nbsp; &nbsp; &nbsp; In the section &lt;Directory /Library/WebServer/Documents &gt;, set AllowOverride ALL. </li>
+
+            <li>To allow rewrites, vi httpd.conf and uncomment: <br />
+&nbsp; &nbsp; &nbsp; LoadModule rewrite_module libexec/apache2/mod_rewrite.so</li>
+	    <li>To test PHP is working, create a file at the DocumentRoot directory called phpinfo.php.  Contents should be &lt;?php phpinfo(); ?&gt;</li>
+	    <li>Open browser and enter localhost/phpinfo.php.  A page should be displayed showing the values of a number of environment variables</li>
+
+</ul>
+
+
+
+</fieldset>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<html>
+<title>
+<head>HADOOP SAMPLE DFS COMMANDS</head>
+</title>
+<body>
+<h2>HADOOP SAMPLE DFS COMMANDS</h2>
+<fieldset>
+<p>
+NOTE:  hdfs://localhost:9000 is defined in $HADOOP_PREFIX/etc/hadoop/core-site.xml<br />
+<br />Before executing the below commands, first execute &quot;cd $HADOOP_PREFIX&quot;<br />
+<br />
+bin/hdfs dfs -mkdir -p hdfs://localhost:9000/input_dir/level1/level2/level3<br />
+<br />
+bin/hdfs dfs -mkdir hdfs://localhost:9000/user/jamesho<br />
+<br />
+bin/hdfs dfs -put etc/hadoop hdfs://localhost:9000/<br />
+<br />
+bin/hdfs dfs -put htest.txt hdfs://localhost:9000/user/jamesho<br />
+<br />
+bin/hdfs dfs -cp hdfs://localhost:9000/user/jamesho/htest.txt hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -cat hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -appendToFile htest2.txt hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -checksum hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -df hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -du -s hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -du hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -find hdfs://localhost:9000/<br />
+<br />
+bin/hdfs dfs -find hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -get hdfs://localhost:9000/input_dir/htest.txt hget.txt<br />
+<br />
+bin/hdfs dfs -getfacl hdfs://localhost:9000/input_dir<br />
+<br />
+bin/hdfs dfs -getfacl hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -ls hdfs://localhost:9000/<br />
+<br />
+bin/hdfs dfs -stat hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -test -z hdfs://localhost:9000/input_dir/htest.txt<br />
+<br />
+bin/hdfs dfs -rm hdfs://localhost:9000/Users<br />
+<br />
+bin/hdfs dfs -rm hdfs://localhost:9000/user/jamesho/htest.txt<br />
+<br />
+bin/hdfs dfs -rmdir hdfs://localhost:9000/Users<br />
+<br />
+bin/hdfs dfs -touchz hdfs://localhost:9000/input_dir/level1/level2/level3/t3.txt<br />
+<br />
+</p>
+</fieldset>
+</body>
+</html>
