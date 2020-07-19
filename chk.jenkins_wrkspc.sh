@@ -169,7 +169,7 @@ comm -13 wrkdir.all.flist $BASE_DIRNAME.flist > missing.flist
 
 files_in_different_hierarchy=`grep -v "^$BASE_DIRNAME" missing.flist | tr '\n' '^'`
 if [[ ! -z $files_in_different_hierarchy ]];then
-  echo -e "\n--- REFERENCED FILES THAT EXIST IN ANOTHER HIERARCHY (i.e. SUB-DOMAIN) ---"
+  echo -e "\n--- REFERENCED FILES THAT EXIST IN ANOTHER HIERARCHY (i.e. SUB-DIRECTORY) ---"
   echo $files_in_different_hierarchy | tr '^' '\n'
 fi
 
