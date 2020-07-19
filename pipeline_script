@@ -28,7 +28,7 @@ pipeline {
                     ./sync.sh 2>/dev/null
                     cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist
                     echo -e "\n--- FILES TO SYNC ---"
-                    comm -12 sync.flist ref.flist | grep '[A-Za-z]' >/dev/null
+                    comm -12 sync.flist ref.flist | grep "[A-Za-z]" >/dev/null
                     if [[ $? -eq 0 ]];then
                       comm -12 sync.flist ref.flist
                       comm -12 sync.flist ref.flist | while read f;do dirname $f;done | sort -u | grep -v "^.\$" | while read dir;do
@@ -41,7 +41,7 @@ pipeline {
                            waitfloor=$(($i/5))
                       done
                     else
-                      echo "No files need to be sync'd"
+                      echo "No files need to be syncd"
                     fi
                   '''
               }
