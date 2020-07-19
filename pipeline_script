@@ -29,8 +29,8 @@ pipeline {
                     cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist
                     echo ""
                     echo "--- FILES TO SYNC ---"
-                    common=`comm -12 sync.flist ref.flist | grep "[A-Za-z]" | grep -v "^ *$"`
-                    if [[ ! -z $common ]];then
+//                    common=`comm -12 sync.flist ref.flist | grep "[A-Za-z]" | grep -v "^ *$"`
+//                    if [[ ! -z $common ]];then
                       comm -12 sync.flist ref.flist
                       comm -12 sync.flist ref.flist | while read f;do dirname $f;done | sort -u | grep -v "^.\$" | while read dir;do ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "mkdir -p /home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$dir";done
                       comm -12 sync.flist ref.flist | while read f;do
@@ -39,10 +39,10 @@ pipeline {
                            sleep $waittime
                            i=$(($i+1))
                            waitfloor=$(($i/5))
-                      done
-                    else
-                      echo "No files need to be syncd"
-                    fi
+//                      done
+//                    else
+//                      echo "No files need to be syncd"
+//                    fi
                   '''
               }
             }
