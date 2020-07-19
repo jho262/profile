@@ -27,13 +27,13 @@ pipeline {
                     waitfloor=5
                     ./sync.sh 2>/dev/null
                     cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist
-                    echo -e "\n--- FILES TO SYNC ---"
-                    comm -12 sync.flist ref.flist | grep "[A-Za-z]" >/dev/null
-                    if [[ $? -eq 0 ]];then
+                    echo ""
+                    echo "--- FILES TO SYNC ---"
+                    common=`comm -12 sync.flist ref.flist | grep "[A-Za-z]" | grep -v "^ *$"`
+                    if [[ ! -z $common ]];then
                       comm -12 sync.flist ref.flist
-                      comm -12 sync.flist ref.flist | while read f;do dirname $f;done | sort -u | grep -v "^.\$" | while read dir;do
-                         ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "mkdir -p /home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$dir";done
-                         comm -12 sync.flist ref.flist | while read f;do
+                      comm -12 sync.flist ref.flist | while read f;do dirname $f;done | sort -u | grep -v "^.\$" | while read dir;do ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "mkdir -p /home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$dir";done
+                      comm -12 sync.flist ref.flist | while read f;do
                            waittime=$(($(($RANDOM % 15))+$waitfloor))
                            scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$f
                            sleep $waittime
