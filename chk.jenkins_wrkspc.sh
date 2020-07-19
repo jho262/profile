@@ -146,7 +146,7 @@ recurse $top_html
 
 
 ## find all files in current directory structure excluding files check scripts and tmp files created by scripts
-find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|chk.jenkins_wrkspc.sh|sync.sh|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
+find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|chk.jenkins_wrkspc.sh|archive_profile.unused.sh|sync.sh|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
 
 
 ## find all files that meet the following 2 critera:
@@ -184,12 +184,17 @@ fi
 
 
 ## prepare a tmp script that will move unused files to archive directory, checks them into github, and deletes original file locations
-cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f; do dirname $f; done | sort -u | egrep -v '^ *$|^\.$' | while read dir;do echo "mkdir -p archive/$dir"; done | awk 'BEGIN{print "#!/bin/bash\n"}{print $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
-cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; echo "mv $f archive/$dir";done >> archive_$BASE_DIRNAME.unused.sh
-cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; fname=`basename $f`; dir=`dirname $f | sed 's#^\.##'`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g';done >> archive_$BASE_DIRNAME.unused.sh
-echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
-echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
-chmod 755 archive_$BASE_DIRNAME.unused.sh
+cat unused.flist | grep -v '/archive/' | grep '[A-Za-z]' >/dev/null
+if [[ $? -eq 0 ]];then
+  cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f; do dirname $f; done | sort -u | egrep -v '^ *$|^\.$' | while read dir;do echo "mkdir -p archive/$dir"; done | awk 'BEGIN{print "#!/bin/bash\n"}{print $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
+  cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; echo "mv $f archive/$dir";done >> archive_$BASE_DIRNAME.unused.sh
+  cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; fname=`basename $f`; dir=`dirname $f | sed 's#^\.##'`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g';done >> archive_$BASE_DIRNAME.unused.sh
+  echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
+  echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
+  chmod 755 archive_$BASE_DIRNAME.unused.sh
+  echo "If you want to archive all unused files (i.e. move them to the archive directory), use `pwd`/archive_$BASE_DIRNAME.unused.sh"
+else
+  echo "No unused files need to be archived"
+fi
 
-echo "If you want to archive all unused files (i.e. move them to the archive directory), use `pwd`/archive_$BASE_DIRNAME.unused.sh"
 
