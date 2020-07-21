@@ -21,11 +21,12 @@ cat local.cksum | awk '{print $1}' | sort > local.flist
 
 
 ## Generate list of files that need to be sync'd 
-comm -23 local.cksum remote.cksum | awk '{print $1}' | sort -u > sync.flist
-comm -23 local.flist remote.flist >> sync.flist
+comm -23 local.cksum remote.cksum | awk '{print $1}' > sync.flist.tmp
+comm -23 local.flist remote.flist >> sync.flist.tmp
+sort -u sync.flist.tmp > sync.flist
 
 
 ## Cleanup temp files
-rm remote.cksum remote.flist local.cksum local.flist
+rm sync.flist.tmp remote.cksum remote.flist local.cksum local.flist
 
 
