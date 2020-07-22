@@ -108,6 +108,7 @@ h1 {
 h2.center {
 	color: black;
 	text-align: center;
+	font-family:  times, courier, helvetica;
 }
 
 .tab {
