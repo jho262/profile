@@ -30,7 +30,7 @@ function recurse {
       starts_with_dot_rc=$?
       echo $file | grep '^\.\./' >/dev/null
       starts_with_dotdot_rc=$?
-      
+
       ## file starts with http
       if [[ $starts_with_http_rc -eq 0 ]];then
 echo "... starts with http" >> tmp.flist
@@ -40,7 +40,6 @@ echo "... starts with http" >> tmp.flist
       elif [[ $has_slash_rc -ne 0 || $starts_with_alphachar_rc -eq 0 ]];then
 echo "... does not contain / or starts with alpha character" >> tmp.flist
         file="$WRKDIR/$file"
-
 
       ## file contains a /
       else
@@ -109,7 +108,7 @@ echo "... prefix = $prefix" >> tmp.flist
 ## MAIN
 #########
 >references.flist
->tmp.flist   
+>tmp.flist
 
 ## Define variables
 HTTP_HOME="http://jhwebex.com/qa/profile"
@@ -162,7 +161,6 @@ echo -e "\n--- UNUSED FILES ---"
 comm -23 wrkdir.all.flist $BASE_DIRNAME.flist | tee -a unused.flist
 
 
-
 ## identify files that are needed by the parent html file which are missing
 comm -13 wrkdir.all.flist $BASE_DIRNAME.flist > missing.flist
 
@@ -181,7 +179,6 @@ if [[ $? -eq 0 ]];then
 fi
 
 
-
 ## prepare a tmp script that will move unused files to archive directory, checks them into github, and deletes original file locations
 cat unused.flist | grep -v '/archive/' | grep '[A-Za-z]' >/dev/null
 if [[ $? -eq 0 ]];then
@@ -195,5 +192,4 @@ if [[ $? -eq 0 ]];then
 else
   echo "No unused files need to be archived"
 fi
-
 
