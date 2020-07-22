@@ -16,8 +16,7 @@ function recurse {
     echo ""
     exit
   else
-    refs=`cat $parent 2>/dev/null | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=' | tr "'" '"' | sed 's#^#\^#' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | grep -v '^ *$' | sed 's#^.*href="##' | sed 's#^.*src="##' | sed 's#^.*load("##' | sed 's#".*$##' | tr '\n' '|'`
-
+    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=' | sed -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
     for file in `echo $refs | tr '|' '\n'`;do
       echo "$file" >> tmp.flist
 
