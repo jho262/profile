@@ -22,7 +22,7 @@ div.all div.main ul.tabs li.spacer {
 
 div.all div.main ul.tabs {
 	margin-top: -20px;
-	margin-left:  -36px;
+	margin-left:  -24px;
 }
 div.all div.main ul.tabs li.menuTab {
 	margin-left: 2px;
@@ -55,7 +55,7 @@ li.spaceA {
 }
 
 div.all {
-	width: 1418px;
+	width: 1138px;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: yellow;
@@ -63,15 +63,15 @@ div.all {
 
 div.leftPane { 
 	width: 160px;
-	height: 2000px;
+	height: 3000px;
 	font-size: 16px;
 	padding: 20px;
 	background-image: url("../images/natfl374.jpg");
 	float: left;
 }
 div.main { 
-	width: 1090px;
-	height: 2000px;
+	width: 810px;
+	height: 3000px;
 	padding: 20px 10px 20px 10px;
 	background-color: #eee;
 	float: left;
@@ -79,7 +79,7 @@ div.main {
 
 div.horzSpc {
 	height: 3px;
-	width: 1080px;
+	width: 800px;
 	background-image: url("../images/natfl374.jpg");
 	margin-top: -20px; 
 	margin-left: 2px;
