@@ -21,7 +21,7 @@ pipeline {
                   // - execute sync.sh to create a list of all files that do not exist at webhost QA location or that may need updating (e.g sync.flist)
                   // - cross reference the list against list of files referenced by parent html, create required remote directories and scp files
 
-                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; i=10; waitfloor=5; ./sync.sh 2>/dev/null; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist; echo ""; echo "--- FILES TO SYNC ---"; comm -12 sync.flist ref.flist'
+                  sh 'WRKDIR=`pwd`; BASE_DIRNAME=`basename $WRKDIR`; i=10; waitfloor=5; ./sync.sh 2>/dev/null; cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist; echo ""; echo "--- FILES TO SYNC ---"; comm -12 sync.flist ref.flist > common.flist; if [[ -s common.flist ]];then echo "contains content"; else "is empty"; fi' 
               }
             }
         }
