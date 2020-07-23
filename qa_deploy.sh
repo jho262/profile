@@ -14,7 +14,7 @@ if [[ "$common" == "" ]];then
 else
   echo "QA env needs to be updated"
   comm -12 sync.flist ref.flist
-  comm -12 sync.flist ref.flist | while read f;do dirname $f done | sort -u | grep -v "^.\\$" | while read dir;do
+  comm -12 sync.flist ref.flist | while read f;do dirname $f done | sort -u | grep -v '^.$' | while read dir;do
      ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "mkdir -p /home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$dir"
   done
   comm -12 sync.flist ref.flist | while read f;do
