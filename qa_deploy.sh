@@ -8,13 +8,13 @@ echo ""
 echo "--- FILES TO SYNC ---"
 
 ## Check if any files need to be syncd to QA env
-common=`comm -12 sync.flist ref.flist | grep "[A-Za-z]"`
-if [[ "$common" == "" ]];then
+comm -12 sync.flist ref.flist | grep '[A-Za-z]' >/dev/null
+if [[ $? -ne 0 ]];then
   echo "No files need to be syncd"
 else
   echo "QA env needs to be updated"
   comm -12 sync.flist ref.flist
-  comm -12 sync.flist ref.flist | while read f;do dirname $f done | sort -u | grep -v '^.$' | while read dir;do
+  comm -12 sync.flist ref.flist | while read f;do dirname $f; done | sort -u | grep -v '^.$' | while read dir;do
      ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "mkdir -p /home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$dir"
   done
   comm -12 sync.flist ref.flist | while read f;do
