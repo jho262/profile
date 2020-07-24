@@ -26,5 +26,29 @@ else
   done
 fi
 
+## Check my URLs for non-http 200 responses
+cat missing.flist | sed 's#^#jhwebex.com/#' > my_urls.flist
+cat ref.flist | sed 's#^\([^/].*\)$#jhwebex.com/QA_profile/\1#' >> my_urls.flist
+myBadHttpResp=`sort -u my_urls.flist | while read url; do echo "^ > $url"; curl -Is $url | head -n 1; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | grep -v '200 OK'`
+
+myBadHttpResp=`cat ref.flist | sed 's#^\([^/].*\)$#jhwebex.com/QA_profile/\1#' | while read url; do echo "^--- $url"; curl -Is $url | head -n 1; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *|200 OK' | tr '\n' '|'`
+
+if [[ -z $myBadHttpResp ]];then
+  echo "All referenced URLs are OK"
+else
+  echo "There are bad URLs:"
+  echo $myBadHttpResp | tr '|' '\n'
+fi
 
 
+
+## Check external URLs for non-http 200 responses
+grep '^http' references.flist | awk '{print $1}' | sort -u  >> ext_urls.flist
+
+badExtUrls=`cat ext_urls.flist | grep -v oracle | while read url; do echo "^--- $url"; curl -Is --connect-timeout 3 "$url" | grep HTTP; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *$|linkedin.com.*HTTP.* 999|200 OK|302 Found' | grep -v '404'cat ext_urls.flist | grep -v oracle | while read url; do echo "^--- $url"; curl -Is --connect-timeout 3 "$url" | grep HTTP; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *$|linkedin.com.*HTTP.* 999|200 OK|302 Found' | tr '\n' '|'`
+
+if [[ -z $badExtUrls ]];then
+  echo "All external URLs are OK"
+else
+  echo "There are bad external URLs:"
+  echo $badExtUrls | tr '|' '\n'
