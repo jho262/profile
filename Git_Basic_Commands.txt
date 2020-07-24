@@ -34,6 +34,10 @@ Commit the file into the local repository (i.e. create a snapshot of your local 
   - git commit -a -m "checkin comment"   -> commits mutltiple files with message.  The -a option also adds modified files to index.
                                             The -a option does not add untracked files to index and commits.
 
+Remove a file from Git:
+  - git rm file1.txt
+  - git commit -m "remove file1.txt"
+
 Show history
   - git log
 
