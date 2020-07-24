@@ -16,7 +16,8 @@ function recurse {
     echo ""
     exit
   else
-    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=' | sed -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
+    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
+###    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=' | sed -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
     for file in `echo $refs | tr '|' '\n'`;do
       echo "$file" >> tmp.flist
 
@@ -111,7 +112,7 @@ echo "... prefix = $prefix" >> tmp.flist
 >tmp.flist
 
 ## Define variables
-HTTP_HOME="http://jhwebex.com/qa/profile"
+HTTP_HOME="http://jhwebex.com/QA_profile"
 WRKDIR=`pwd`
 DOCROOT=`dirname $WRKDIR`
 BASE_DIRNAME=`basename $WRKDIR`
@@ -144,7 +145,7 @@ recurse $top_html
 
 
 ## find all files in current directory structure excluding files check scripts and tmp files created by scripts
-find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|chk.jenkins_wrkspc.sh|archive_profile.unused.sh|sync.sh|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
+find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|\.sh$|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
 
 
 ## find all files that meet the following 2 critera:

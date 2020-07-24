@@ -16,7 +16,7 @@ cat remote.cksum | awk '{print $1}' | sort > remote.flist
 
 
 ## Create local file checksums and flist 
-find . -type f | egrep -v '\./\.git\/|sync\.|remote\.|local\.|list$|qa_chk.sh|sync.sh' | while read f; do cksum $f | awk '{print $NF, $1}' | sed 's#\./##';done | sort > local.cksum
+find . -type f | egrep -v '\./\.git\/|sync\.|remote\.|local\.|list$|\.sh$' | while read f; do cksum $f | awk '{print $NF, $1}' | sed 's#\./##';done | sort > local.cksum
 cat local.cksum | awk '{print $1}' | sort > local.flist
 
 

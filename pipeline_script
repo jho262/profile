@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage ('STAGE 1 - PRE-QA_DEPLOYMENT_CHECK_FOR_MISSING_FILES') {
             steps {
-                println "... executing pre-QA_deployment check for missing files"
+                println "#####  executing pre-QA_deployment check for missing files"
                 sh './chk.jenkins_wrkspc.sh index.html'
             }
         }
         stage ('STAGE 2 - QA_DEPLOY') {
             steps {
-              println "... executing QA deployment stage"
+              println "#####  executing QA deployment stage"
               withCredentials([
                 string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
@@ -25,25 +25,30 @@ pipeline {
               }
             }
         }
-        stage ('STAGE 3 - QA_TEST') {
+        stage ('STAGE 3 - QA_VERIFY') {
             steps {
-                println "... executing QA test stage: (1) test home page and (2) test referenced links"
+                println "#####  executing QA verify stage, test referenced links"
                 sh './run_qa.sh verify' 
             }
         }
-        stage ('STAGE 4 - PROD_DEPLOY') {
+        stage ('STAGE 4 - PROD_BACKUP') {
             steps {
-                println "... executing PROD deployment stage"
+                println "#####  executing PROD backup stage"
             }
         }
-        stage ('STAGE 5 - REPORT_VALID_FILES') {
+        stage ('STAGE 5 - PROD_DEPLOY') {
             steps {
-                println "... executing report valid files stage"
+                println "#####  executing PROD deployment stage"
             }
         }
-        stage ('STAGE 6 - REPORT_UNUSED_FILES') {
+        stage ('STAGE 6 - PROD_VERIFY') {
             steps {
-                println "... executing report unused files stage"
+                println "#####  executing PROD verify stage"
+            }
+        }
+        stage ('STAGE 7 - PROD_CLEANUP') {
+            steps {
+                println "#####  executing PROD cleanup stage"
             }
         }
     }
