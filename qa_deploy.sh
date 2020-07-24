@@ -1,8 +1,11 @@
+## Define vars
 WRKDIR=`pwd`
 BASE_DIRNAME=`basename $WRKDIR`
-i=10
-waitfloor=5
+rc=0          # return code
+i=10          # used to pause upload since webhost site terminates scp connection after repeated rapid file upload
+waitfloor=5   # used to pause upload since webhost site terminates scp connection after repeated rapid file upload
 ./sync.sh 2>/dev/null
+
 cat $BASE_DIRNAME.flist | grep "^$BASE_DIRNAME" | sed "s#^$BASE_DIRNAME/##" | sort > ref.flist
 echo ""
 echo "--- FILES TO SYNC ---"
@@ -20,7 +23,7 @@ else
   comm -12 sync.flist ref.flist | while read f;do
     waittime=$(($(($RANDOM % 15))+$waitfloor))
     scp -p -i ${SECRETKEY} $f ${SECRETUSER}@${SECRETHOST}:/home/ar4jf2nz/public_html/QA_${BASE_DIRNAME}/$f
-    sleep $waittime
+    sleep $waittime    # used to pause upload since webhost site terminates scp connection after repeated rapid file upload
     i=$(($i+1))
     waitfloor=$(($i/5))
   done
@@ -38,17 +41,22 @@ if [[ -z $myBadHttpResp ]];then
 else
   echo "There are bad URLs:"
   echo $myBadHttpResp | tr '|' '\n'
+  rc=1
 fi
 
 
 
 ## Check external URLs for non-http 200 responses
-grep '^http' references.flist | awk '{print $1}' | sort -u  >> ext_urls.flist
+grep '^http' references.flist | awk '{print $1}' | sort -u  > ext_urls.flist
 
-badExtUrls=`cat ext_urls.flist | grep -v oracle | while read url; do echo "^--- $url"; curl -Is --connect-timeout 3 "$url" | grep HTTP; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *$|linkedin.com.*HTTP.* 999|200 OK|302 Found' | grep -v '404'cat ext_urls.flist | grep -v oracle | while read url; do echo "^--- $url"; curl -Is --connect-timeout 3 "$url" | grep HTTP; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *$|linkedin.com.*HTTP.* 999|200 OK|302 Found' | tr '\n' '|'`
+badExtUrls=`cat ext_urls.flist | grep -v oracle | while read url; do echo "^--- $url"; curl -Is --connect-timeout 3 "$url" | grep HTTP; done | tr '\n' ' ' | awk 'BEGIN{RS="^"}{print $0}' | egrep -v '^ *$|linkedin.com.*HTTP.* 999|HTTP.* 200|HTTP.* 302' | tr '\n' '|'`
 
 if [[ -z $badExtUrls ]];then
   echo "All external URLs are OK"
 else
   echo "There are bad external URLs:"
   echo $badExtUrls | tr '|' '\n'
+  rc=2
+fi
+
+exit $rc
