@@ -31,8 +31,9 @@ if [[ ! -z prod_extras.flist ]];then
 fi
 
 if [[ ! -z qa_extras.flist && ! -z modified.flist ]];then
-  cat qa_extras.flist modified.flist | sort | awk 'BEGIN{print "Files that will be added or modified in PROD:\n"}{print $1}END{print "\n"}'
-  cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${webpg} ${webpg}; done
+  cat qa_extras.flist modified.flist | sort | awk 'BEGIN{print "\nFiles that will be added or modified in PROD:\n"}{print $1}'
+  echo "cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${webpg}/$f ${webpg}/$f; done"
+###  cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${webpg}/$f ${webpg}/$f; done
 else
   echo "No changes are needed.  All non-archive files in PROD env are already in sync with QA."
 fi
