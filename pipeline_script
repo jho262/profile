@@ -34,7 +34,7 @@ pipeline {
         stage ('STAGE 4 - PROD_BACKUP') {
             steps {
                 println "\n=====  EXECUTING PROD backup stage"
-                sh 'webpg=basename `pwd`; scp -p -i $SECRETKEY backup_prod.sh  $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./backup_prod.sh $webpg"'
+                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY backup_prod.sh  $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./backup_prod.sh $webpg"'
             }
         }
         stage ('STAGE 5 - PROD_DEPLOY') {
