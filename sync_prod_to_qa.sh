@@ -8,11 +8,11 @@ function prtUsage {
 
 ## read name of web page to backup
 if [[ -z $1 ]];then
-  webpg=$1
-else
   echo "ERROR:  Missing mandatory argument"
   prtUsage
   exit 1
+else
+  webpg=$1
 fi
 
 ## generate checksums for each file in ${webpg} and QA_${webpg}
