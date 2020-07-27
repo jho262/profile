@@ -34,6 +34,7 @@ pipeline {
         stage ('STAGE 4 - PROD_BACKUP') {
             steps {
                 println "\n=====  EXECUTING PROD backup stage"
+                sh 'webpg=basename `pwd`; ./backup_prod.sh $webpg'
             }
         }
         stage ('STAGE 5 - PROD_DEPLOY') {
