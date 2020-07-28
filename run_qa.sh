@@ -68,6 +68,13 @@ elif [[ "$OPERATION" == "verify" ]];then
     rc=2
   fi
 
+
+  ## Check for any unused files in QA directory
+  ssh -i ${SECRETKEY} ${SECRETUSER}@${SECRETHOST} "cd public_html/QA_${BASE_DIRNAME}; find . -type f" | sed 's#^\./##' | sort > qa_all.flist
+  echo "There are unused files in QA environment:"
+  comm -23 qa_all.flist ref.flist | grep -v '/archive/'
+       
+
 else
   ## Unrecognized build step
   echo "ERROR:  Unrecognized argument specified for $0"
