@@ -27,8 +27,14 @@ pipeline {
         }
         stage ('STAGE 3 - QA_VERIFY') {
             steps {
-                println "\n=====  EXECUTING QA verify stage, test referenced links"
-                sh './run_qa.sh verify' 
+              println "\n=====  EXECUTING QA verify stage, test referenced links"
+              withCredentials([
+                string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
+                string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
+                string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
+              ]){
+                  sh './run_qa.sh verify' 
+              }
             }
         }
         stage ('STAGE 4 - PROD_BACKUP') {
