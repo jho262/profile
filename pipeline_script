@@ -39,7 +39,7 @@ pipeline {
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
-                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY backup_prod.sh  $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./backup_prod.sh $webpg"'
+                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY run_prod.sh  $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh backup $webpg"'
               }
             }
         }
@@ -51,7 +51,7 @@ pipeline {
                 string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
                 string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
               ]){
-                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY sync_prod_to_qa.sh $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./sync_prod_to_qa.sh $webpg"'
+                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh deploy $webpg"'
               }
             }
         }
