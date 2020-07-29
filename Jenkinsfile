@@ -5,7 +5,7 @@ pipeline {
         stage ('STAGE 1 - PRE-QA_DEPLOYMENT_CHECK_FOR_MISSING_FILES') {
             steps {
                 println "\n=====  EXECUTING pre-QA_deployment check for missing files"
-                sh './chk.jenkins_wrkspc.sh index.html'
+                sh './find_child_ref_status.sh index.html'
             }
         }
         stage ('STAGE 2 - QA_DEPLOY') {
@@ -63,7 +63,14 @@ pipeline {
         }
         stage ('STAGE 6 - PROD_VERIFY') {
             steps {
-                println "\n=====  EXECUTING PROD verify stage"
+              println "\n=====  EXECUTING PROD verify stage"
+              withCredentials([
+                string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
+                string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
+                string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
+              ]){
+                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY find_child_ref_status.sh $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh verify $webpg"'
+              }
             }
         }
         stage ('STAGE 7 - PROD_CLEANUP') {

@@ -77,9 +77,10 @@ elif [[ "$OPERATION" == "deploy" ]];then
   echo "... deploying changes to PROD $WEBPG page"
 
   ## generate checksums for each file in ${WEBPG} and QA_${WEBPG}
-  cd ${HOME}/public_html
-  find QA_${WEBPG}/ -type f | grep -v '/archive/' | while read f;do cksum $f | awk '{print $NF, $1}';done | sort | sed "s#QA_${WEBPG}/##" | egrep -v '\.flist |\.cksum ' > qa.cksum
-  find ${WEBPG} -type f | grep -v '/archive/' | while read f;do cksum $f | awk '{print $NF, $1}';done | sort | sed "s#${WEBPG}/##" | egrep -v '\.flist |\.cksum ' > prod.cksum
+  cd ${HOME}/public_html/QA_${WEBPG}
+  find . -type f | grep -v '/archive/' | while read f;do cksum $f | awk '{print $NF, $1}';done | sort | sed "s#QA_${WEBPG}/##" | egrep -v '\.flist |\.cksum ' > ${HOME}/public_html/${WEBPG}/qa.cksum
+  cd ${HOME}/public_html/${WEBPG}
+  find . -type f | grep -v '/archive/' | while read f;do cksum $f | awk '{print $NF, $1}';done | sort | sed "s#${WEBPG}/##" | egrep -v '\.flist |\.cksum ' > prod.cksum
 
   ## identify differences between PROD and QA
   ##   generate lists containing identical files in QA and prod, extra files in prod,
@@ -104,6 +105,8 @@ elif [[ "$OPERATION" == "deploy" ]];then
 
 elif [[ "$OPERATION" == "verify" ]];then
   echo "... verifying PROD updates to $WEBPG page"
+
+  ./find_child_ref_status.sh index.html
 
 #-------------------------
 #        ## Check my URLs for non-http 200 responses
