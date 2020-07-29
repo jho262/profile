@@ -93,9 +93,11 @@ echo "... prefix = $prefix" >> tmp.flist
       dup_rc=$?
       file $file | grep ASCII >/dev/null
       ascii_rc=$?
+      echo $file | grep 'jquery.*\.js' >/dev/null
+      jqry_file_rc=$?
       if [[ -e $file ]];then
         ## check if duplicate reference
-        if [[ $dup_rc -ne 0 ]];then
+        if [[ $dup_rc -ne 0 && $jqry_file_rc -ne 0 ]];then
           echo $file >> references.flist
           ## check if ascii file
           if [[ $ascii_rc -eq 0 ]];then
