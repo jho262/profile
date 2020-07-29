@@ -1,15 +1,28 @@
 #!/bin/bash
 
-# This script will recursively check all file references when passed a top level html (e.g. index.html).  This version
-# of the script will perform the check in the Jenkins workspace prior to deploying to the QA webhosting site.  All file
-# references local to the parent html directory must exist to PASS the check.
+## This script will recursively check all file references when passed a top level html (e.g. index.html). 
+## All file references local to the parent html directory must exist to PASS the check.  The script must 
+## be invoked in the directory where the top level html file resides.
+## 
+## Output files:
+##   tmp.flist            - child references in raw format including duplicates and debugging comments
+##   references.flist     - unique list of child references formatted to include path starting with $WRKDIR and
+##                            + external references will be marked as EXTERNAL_FILE
+##                            + references to local files that are not found will be marked as MISSING
+##   wrkdir.all.flist     - all files found in current working dir (i.e. should be all the $WEBPG files checked into GitHub)
+##   $BASE_DIRNAME.flist  - the references.flist files w/o the $DOCROOT path and excluding external files
+##   unused.flist         - all files in current working dir not referenced by top level html
+##   missing.flist        - list of referenced files that do not exist in current working dir
 
+
+## function prtUsage - print script usage with example
 function prtUsage {
   echo "USAGE  :  $0 <html_file>"
   echo "EXAMPLE:  $0 index.html"
   exit 1
 }
 
+## function recurse - descends down hierarchy of passed html file to identify all child references.
 function recurse {
   parent=$1
   if [[ -z $parent ]];then
@@ -17,7 +30,6 @@ function recurse {
     exit
   else
     refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
-###    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=' | sed -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
     for file in `echo $refs | tr '|' '\n'`;do
       echo "$file" >> tmp.flist
 
@@ -144,8 +156,8 @@ echo $top_html >> references.flist
 recurse $top_html
 
 
-## find all files in current directory structure excluding files check scripts and tmp files created by scripts
-find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|\.sh$|pipeline_script' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
+## find all files in current directory structure excluding check scripts and tmp files created by scripts
+find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|\.sh$|Jenkinsfile' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
 
 
 ## find all files that meet the following 2 critera:
@@ -193,4 +205,5 @@ if [[ $? -eq 0 ]];then
 else
   echo "No unused files need to be archived"
 fi
+
 
