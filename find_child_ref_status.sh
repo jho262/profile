@@ -206,7 +206,7 @@ if [[ $? -eq 0 ]];then
   jenkins_wrkspc_rc=$?
   if [[ $jenkins_wrkspc_rc -eq 0 ]];then
     echo "... updating GitHub repository to reflect archiving of files"
-    cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; fname=`basename $f`; dir=`dirname $f | sed 's#^\.##'`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g'; echo ""; echo "git rm $dir/$fname" | sed 's#//*#/#g';done >> archive_$BASE_DIRNAME.unused.sh
+    cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME//*##" | while read f;do dir=`dirname $f | sed 's#^\./*##'`; fname=`basename $f`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g'; echo ""; echo "git rm $dir/$fname" | sed 's#rm //*#rm #';done >> archive_$BASE_DIRNAME.unused.sh
     echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
     echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
   fi
