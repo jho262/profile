@@ -75,7 +75,14 @@ pipeline {
         }
         stage ('STAGE 7 - PROD_CLEANUP') {
             steps {
-                println "\n=====  EXECUTING PROD cleanup stage"
+              println "\n=====  EXECUTING PROD cleanup stage"
+              withCredentials([
+                string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),
+                string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),
+                string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')
+              ]){
+                sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh cleanup $webpg"'
+              }  
             }
         }
     }
