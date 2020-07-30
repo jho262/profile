@@ -1,7 +1,6 @@
 For a good tutorial on Git, see DevOps Tutorial for Beginners Edureka at approximately 1 hour into the video ( https://www.youtube.com/watch?v=hQcFE0RD0cQ )
 
 
-
 Getting started with GIT
   - need a central repository
   - need a local repository
