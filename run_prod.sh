@@ -95,9 +95,9 @@ elif [[ "$OPERATION" == "deploy" ]];then
   fi
 
   if [[ ! -z qa_extras.flist && ! -z modified.flist ]];then
-    cat qa_extras.flist modified.flist | sort | awk 'BEGIN{print "Files that will be added or modified in PROD:"}{print $1}'
+    cat qa_extras.flist modified.flist | sort | awk 'BEGIN{print "Files that are being added or modified in PROD:"}{print $1}'
     echo "cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${WEBPG}/$f ${WEBPG}/$f; done"
-  ###  cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${WEBPG}/$f ${WEBPG}/$f; done
+    cat qa_extras.flist modified.flist | sort | awk '{print $1}' | while read f; do cp -p QA_${WEBPG}/$f ${WEBPG}/$f; done
   else
     echo "No changes are needed.  All non-archive files in PROD env are already in sync with QA."
   fi

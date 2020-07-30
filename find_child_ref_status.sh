@@ -29,7 +29,7 @@ function recurse {
     echo ""
     exit
   else
-    refs=`cat $parent 2>/dev/null | tr "'" '"' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
+    refs=`cat $parent 2>/dev/null | tr "'" '"' | egrep -v 'href="mailto:|href="tel:' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
     for file in `echo $refs | tr '|' '\n'`;do
       echo "$file" >> tmp.flist
 
@@ -91,16 +91,18 @@ echo "... prefix = $prefix" >> tmp.flist
       ## if not leaf, descend down hierarchy.  else, echo $file
       grep $file references.flist >/dev/null
       dup_rc=$?
-      file $file | grep ASCII >/dev/null
+      file $file | egrep 'ASCII|HTML' >/dev/null
       ascii_rc=$?
       echo $file | grep 'jquery.*\.js' >/dev/null
       jqry_file_rc=$?
+      echo $file | grep "^${WRKDIR}/" >/dev/null
+      local_file_rc=$?
       if [[ -e $file ]];then
         ## check if duplicate reference
         if [[ $dup_rc -ne 0 && $jqry_file_rc -ne 0 ]];then
           echo $file >> references.flist
           ## check if ascii file
-          if [[ $ascii_rc -eq 0 ]];then
+          if [[ $ascii_rc -eq 0 && $local_file_rc -eq 0 ]];then
             recurse $file
           fi
         fi
