@@ -201,9 +201,15 @@ cat unused.flist | grep -v '/archive/' | grep '[A-Za-z]' >/dev/null
 if [[ $? -eq 0 ]];then
   cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f; do dirname $f; done | sort -u | egrep -v '^ *$|^\.$' | while read dir;do echo "mkdir -p archive/$dir"; done | awk 'BEGIN{print "#!/bin/bash\n"}{print $0}END{print ""}' > archive_$BASE_DIRNAME.unused.sh
   cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; echo "mv $f archive/$dir";done >> archive_$BASE_DIRNAME.unused.sh
-  cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; fname=`basename $f`; dir=`dirname $f | sed 's#^\.##'`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g';done >> archive_$BASE_DIRNAME.unused.sh
-  echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
-  echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
+
+  echo $WRKDIR | grep '/\.jenkins/' >/dev/null
+  jenkins_wrkspc_rc=$?
+  if [[ $jenkins_wrkspc_rc -eq 0 ]];then
+    echo "... updating GitHub repository to reflect archiving of files"
+    cat unused.flist | grep -v 'archive/' | grep "$BASE_DIRNAME/" | sed "s#$BASE_DIRNAME/##" | while read f;do dir=`dirname $f | sed 's#^\.##'`; fname=`basename $f`; dir=`dirname $f | sed 's#^\.##'`; echo "git add archive/$dir/$fname" | sed 's#//*#/#g'; echo ""; echo "git rm $dir/$fname" | sed 's#//*#/#g';done >> archive_$BASE_DIRNAME.unused.sh
+    echo 'git commit -a -m "archive unused files"' >> archive_$BASE_DIRNAME.unused.sh
+    echo 'git push origin master' >> archive_$BASE_DIRNAME.unused.sh
+  fi
   chmod 755 archive_$BASE_DIRNAME.unused.sh
   echo "If you want to archive all unused files (i.e. move them to the archive directory), use `pwd`/archive_$BASE_DIRNAME.unused.sh"
 else
