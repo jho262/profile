@@ -32,6 +32,7 @@ WEBPG=$2
 WRKDIR=`pwd`
 BASE_DIRNAME=`basename $WRKDIR`
 rc=0          # return code
+KEEP_QTY=5
 
 
 ## Check OPERATION to be performed (e.g. backup, deploy, verify, or cleanup) and execute step
@@ -41,7 +42,6 @@ if [[ "$OPERATION" == "backup" ]];then
   ## set variables
   dtstmp=`date +"%Y%m%d"`
   bak_dir="${HOME}/public_html/${WEBPG}_${dtstmp}"
-  KEEP_QTY=5
 
   if [[ -d $bak_dir ]];then
     echo "... backup already taken today.  If a more recent backup is needed, rename (i.e. append -1) or remove earlier backup taken today."
@@ -66,12 +66,6 @@ if [[ "$OPERATION" == "backup" ]];then
     fi
   fi
 
-  ## cleanup old backups exceeding KEEP_QTY
-  start_line=$(($KEEP_QTY+1))
-  cd ${HOME}/public_html
-  ls | grep "${WEBPG}_20[0-9][0-9]*" | sort -r | sed -n "$start_line,\$p" > rmv.old_backups.flist
-  grep '_20[0-9][0-9]*/$' rmv.old_backups.flist | while read dir;do echo "removing $dir"; rm -rf $dir; done
-  rm rmv.old_backups.flist
 
 elif [[ "$OPERATION" == "deploy" ]];then
   echo "... deploying changes to PROD $WEBPG page"
@@ -143,6 +137,21 @@ elif [[ "$OPERATION" == "verify" ]];then
 elif [[ "$OPERATION" == "cleanup" ]];then
   echo "... cleaning up PROD $WEBPG page"
 
+  ## cleanup old backups exceeding KEEP_QTY
+  start_line=$(($KEEP_QTY+1))
+  cd ${HOME}/public_html
+  ls | grep "${WEBPG}_20[0-9][0-9]*" | sort -r | sed -n "$start_line,\$p" > rmv.old_backups.flist
+  echo "${WEBPG} backups that are being removed:"
+  cat rmv.old_backups.flist
+  grep '_20[0-9][0-9]*/$' rmv.old_backups.flist | while read dir;do echo "removing $dir"; rm -rf $dir; done
+  rm rmv.old_backups.flist
+
+  ## cleanup scripts and temp files created during verify stage
+  cd ${HOME}/public_html/${WEBPG}
+  ls | egrep '\.cksum|\.flist|\.sh$' > file_rmv.flist
+  echo "Deleting temporary files created during verify stage"
+  cat file_rmv.flist
+  
 
 else
   ## Unrecognized build step
