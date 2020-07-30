@@ -138,6 +138,7 @@ elif [[ "$OPERATION" == "cleanup" ]];then
   echo "... cleaning up PROD $WEBPG page"
 
   ## cleanup old backups exceeding KEEP_QTY
+  echo "Removing old ${WEBPG} backups"
   start_line=$(($KEEP_QTY+1))
   cd ${HOME}/public_html
   ls | grep "${WEBPG}_20[0-9][0-9]*" | sort -r | sed -n "$start_line,\$p" > rmv.old_backups.flist
@@ -147,6 +148,7 @@ elif [[ "$OPERATION" == "cleanup" ]];then
   rm rmv.old_backups.flist
 
   ## cleanup scripts and temp files created during verify stage
+  echo "Removing shell scripts and their temporary output files"
   cd ${HOME}/public_html/${WEBPG}
   ls | egrep '\.cksum|\.flist|\.sh$' > file_rmv.flist
   echo "Deleting temporary files created during verify stage"
