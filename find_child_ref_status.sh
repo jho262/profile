@@ -159,7 +159,7 @@ recurse $top_html
 
 
 ## find all files in current directory structure excluding check scripts and tmp files created by scripts
-find $DOCROOT -type f | egrep -v '\@tmp/|/\.git/|cksum$|flist$|\.sh$|Jenkinsfile' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
+find $DOCROOT -type f | grep "/${BASE_DIRNAME}/" | egrep -v '\@tmp/|/\.git/|cksum$|flist$|\.sh$|Jenkinsfile' | sed "s#$DOCROOT/##" | sort -u > wrkdir.all.flist
 
 
 ## find all files that meet the following 2 critera:
