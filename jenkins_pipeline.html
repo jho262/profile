@@ -1,0 +1,110 @@
+<html>
+<head><title>Jenkins Pipeline Project</title>
+</head>
+<body>
+<h1>Jenkins Pipeline Project</h1>
+<p>The development and maintenance of my online profile page is accomplished using GitHub and Jenkins.<br/><br/>
+The source code and Jenkins related scripts are saved at <a href='https://github.com/jho262/profile'>my GitHub account</a>.
+Using my locally installed Jenkins, a web-hook was created that would automate the deployment and validation of the HTML files for my online profile page whenever my GitHub account was updated.<br/><br/>
+
+The use of a valuable tool, ngrok, allows your local Jenkins web server to be accessible by GitHub.  Simply executing the command "~/Applications/ngrok http 8080" in a terminal window is all that is needed.<br/><br/>
+
+The Jenkins Pipeline steps are summarized as:<br/><br/>
+<img src='jenkins_project_steps.png'/>
+<br/><br/>
+</p>
+<p>
+The content of the Jenkins pipeline script is:<br/><br />
+Jamess-MacBook-Pro:~ jamesho$ cat ./jhwebex_docroot/profile/Jenkinsfile</br>
+pipeline {<br/>
+ &nbsp; &nbsp; agent any<br/>
+<br/>
+ &nbsp; &nbsp; stages {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 1 - PRE-QA_DEPLOYMENT_CHECK_FOR_MISSING_FILES') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; println "\n=====  EXECUTING pre-QA_deployment check for missing files"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh './find_child_ref_status.sh index.html'<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 2 - QA_DEPLOY') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   println "\n=====  EXECUTING QA deployment stage"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   // Random, generally increasing waittime is used since webhost site closes connection when repeated file transfers occur too quick.<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   // Copy all referenced files including parent html to QA location by doing the following:<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   // - execute sync.sh to create a list of all files that do not exist at webhost QA location or that may need updating (e.g sync.flist)<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   // - cross reference the list against list of files referenced by parent html, create required remote directories and scp files<br/>
+<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   sh './run_qa.sh deploy' <br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 3 - QA_VERIFY') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   println "\n=====  EXECUTING QA verify stage, test referenced links"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   sh './run_qa.sh verify' <br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 4 - PROD_BACKUP') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   println "\n=====  EXECUTING PROD backup stage"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY run_prod.sh  $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh backup $webpg"'<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 5 - PROD_DEPLOY') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; println "\n=====  EXECUTING PROD deployment stage"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh deploy $webpg"'<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 6 - PROD_VERIFY') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   println "\n=====  EXECUTING PROD verify stage"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; scp -p -i $SECRETKEY find_child_ref_status.sh $SECRETUSER@$SECRETHOST:public_html/${webpg}; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh verify $webpg"'<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; stage ('STAGE 7 - PROD_CLEANUP') {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; steps {<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   println "\n=====  EXECUTING PROD cleanup stage"<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   withCredentials([<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webuser', variable: 'SECRETUSER'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_webhost', variable: 'SECRETHOST'),<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string(credentialsId: 'secret_profilekey', variable: 'SECRETKEY')<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   ]){<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sh 'wrkdir=`pwd`; webpg=`basename $wrkdir`; ssh -i $SECRETKEY $SECRETUSER@$SECRETHOST "cd public_html/${webpg}; ./run_prod.sh cleanup $webpg"'<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   }  <br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; &nbsp; &nbsp; }<br/>
+ &nbsp; &nbsp; }<br/>
+}<br/>
+</p>
+</body>
+</html>
