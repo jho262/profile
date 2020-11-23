@@ -27,7 +27,7 @@ ul {
  margin-left:20px;
 }
 p.sz10 {
- font-size:12px;
+ font-size:10px;
  padding-bottom:8px;
 }
 table.sz10 {
@@ -102,23 +102,23 @@ configuration database management system administrator for an EDA software compa
 1.5 years as a Customer Support Engineer for a mobile banking company, 1.5 years as an Application Engineer in document repository management 
 in the Healthcare Industry, 2.5 years as a Programmer Analyst to migrate to a new Enterprise Pharmacy System (EPS), 8 months as a Unix developer, and 2+ years as a Technical Support Engineer with a focus on Unix shell scripting. 
 <br /><br /><a href="https://www.linkedin.com/in/james-ho-b2a87a">LinkedIn Profile</a><br /></p>
-			<p>During my work in the IT field, I have developed skills in the following disciplines:
+			<p>During my work in the IT field, I have developed skills in the below disciplines.  To see a list of accomplishments for each specific area, hover over the item.
 			</p>
 			<div class='container'>
 
 <form action="" method="POST">
 			<ul>
-				<li class="spaceA"><div class='content'><span title="Please wait ..." id="unix">UNIX/LINUX</span></div></li>
+				<li class="spaceA"><div class='content'><span title="Please wait ..." id="unix">Unix/Linux</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="nagios">Nagios XI monitoring</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="automation">Automation</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="shell_scripting">Shell programming</span></div></li>
-				<li class="spaceA"><div class="content"><a href='web_development.html'><span title="Please wait ..." id="web_development">Web Development</span></a></div></li>
-				<li class="spaceA"><div class="content"><a href='jenkins_pipeline.html'><span title="Please wait ..." id="jenkins">Jenkins</span></a></div></li>
-				<li class="spaceA"><div class="content"><a href='github.html'><span title="Please wait ..." id="git">Git</span></a></div></li>
+				<li class="spaceA"><div class="content"><span title="Please wait ..." id="web_development">Web Development &nbsp; - &nbsp; </span><a href='web_development.html'>(see more info)</a></div></li>
+				<li class="spaceA"><div class="content floatleft"><span title="Please wait ..." id="jenkins">Jenkins &nbsp; - &nbsp; </span><a href='jenkins_pipeline.html'>(see more info)</a></div></li>
+				<li class="spaceA"><div class="content"><span title="Please wait ..." id="git">Git &nbsp; - &nbsp; </span><a href='github.html'>(see more info)</a></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="chef_inspec">Chef Inspec</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="expect_scripts">Expect scripts</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="sql">SQL</span></div></li>
-				<li class="spaceA"><div class="content"><span title="Please wait ..." id="elixir_report_tool">Elixir report tool</span></div></li>
+				<li class="spaceA"><div class="content"><span title="Please wait ..." id="elixir">Elixir report tool</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="reporting">Cognos/Elixir/Crystal Report tools</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="rdbms">Relational database management systems (RDBMS)</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="cdms">Configuration database management/version control systems (CDMS) </span></div></li>

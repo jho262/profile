@@ -5,7 +5,7 @@ pipeline {
         stage ('STAGE 1 - PRE-QA_DEPLOYMENT_CHECK_FOR_MISSING_FILES') {
             steps {
                 println "\n=====  EXECUTING pre-QA_deployment check for missing files"
-                sh './find_child_ref_status.sh index.html'
+                sh './find_child_ref_status.sh index.php'
             }
         }
         stage ('STAGE 2 - QA_DEPLOY') {

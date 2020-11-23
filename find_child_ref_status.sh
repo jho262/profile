@@ -1,8 +1,8 @@
 #!/bin/bash
 
-## This script will recursively check all file references when passed a top level html (e.g. index.html). 
-## All file references local to the parent html directory must exist to PASS the check.  The script must 
-## be invoked in the directory where the top level html file resides.
+## This script will recursively check all file references when passed a top level html or php (e.g. index.html or index.php). 
+## All file references local to the parent html/php directory must exist to PASS the check.  The script must 
+## be invoked in the directory where the top level html/php file resides.
 ## 
 ## Output files:
 ##   tmp.flist            - child references in raw format including duplicates and debugging comments
@@ -11,14 +11,15 @@
 ##                            + references to local files that are not found will be marked as MISSING
 ##   wrkdir.all.flist     - all files found in current working dir (i.e. should be all the $WEBPG files checked into GitHub)
 ##   $BASE_DIRNAME.flist  - the references.flist files w/o the $DOCROOT path and excluding external files
-##   unused.flist         - all files in current working dir not referenced by top level html
+##   unused.flist         - all files in current working dir not referenced by top level html/php
 ##   missing.flist        - list of referenced files that do not exist in current working dir
 
 
 ## function prtUsage - print script usage with example
 function prtUsage {
-  echo "USAGE  :  $0 <html_file>"
-  echo "EXAMPLE:  $0 index.html"
+  echo "USAGE    :  $0 <html_or_php_file>"
+  echo "EXAMPLE 1:  $0 index.html"
+  echo "EXAMPLE 2:  $0 index.php"
   exit 1
 }
 
@@ -29,7 +30,10 @@ function recurse {
     echo ""
     exit
   else
-    refs=`cat $parent 2>/dev/null | tr "'" '"' | egrep -v 'href="mailto:|href="tel:' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
+
+  refs=`cat $parent 2>/dev/null | tr "'" '"' | egrep -v 'href="mailto:|href="tel:| sh ' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url.##' -e 's#^.*href=##' -e 's#^.*src=##' -e 's#^.*load(##' -e 's#"#\^#' -e 's#"#\^#' -e 's#^.*\^\(.*\)\^.*$#\1#' | egrep -v '^#|ui-tooltip'`
+
+###    refs=`cat $parent 2>/dev/null | tr "'" '"' | egrep -v 'href="mailto:|href="tel:' | sed -e 's#^#\^#' -e 's#href=#^href=#g' -e 's#src=#^src=#g' | tr '\n' '^' | awk 'BEGIN{RS="^"}{print $0}' | egrep '\.html|\.css|\.gif|\.png|\.php|src=|href=|background-image: *url..' | sed -e 's#^.*background-image: *url..##' -e 's#^.*href=.##' -e 's#^.*src=.##' -e 's#^.*load("##' -e 's#".*$##' | grep -v '^#'`
     for file in `echo $refs | tr '|' '\n'`;do
       echo "$file" >> tmp.flist
 
@@ -138,9 +142,9 @@ if [[ -z $1 ]];then
   echo "ERROR:  Mandatory arg is missing."
   prtUsage
 else
-  echo $1 | grep '\.html$' >/dev/null 2>&1
+  echo $1 | egrep '\.html$|\.php$' >/dev/null 2>&1
   if [[ $? -ne 0 ]];then
-    echo "ERROR:  This script only works with html files."
+    echo "ERROR:  This script only works with html or php files."
     prtUsage
   fi
 fi
@@ -156,7 +160,7 @@ else
 fi
 echo $top_html >> references.flist
 
-## Recursively descend through child html files to identify all referenced files
+## Recursively descend through child html/php files to identify all referenced files
 recurse $top_html
 
 
@@ -165,20 +169,20 @@ find $DOCROOT -type f | grep "/${BASE_DIRNAME}/" | egrep -v '\@tmp/|/\.git/|cksu
 
 
 ## find all files that meet the following 2 critera:
-##    (1) are directly or indirectly referenced by the parent html file
-##    (2) should exist in the directory structure of the parent html file
+##    (1) are directly or indirectly referenced by the parent html/php file
+##    (2) should exist in the directory structure of the parent html/php file
 grep "$DOCROOT" references.flist  | awk '{print $1}' | sort -u | sed "s#$DOCROOT/##" > $BASE_DIRNAME.flist
 echo -e "\n--- REFERENCED FILES ---"
 cat $BASE_DIRNAME.flist
 
 
-## identify files that are not part of the parent html hierarchy (i.e. files that can be deleted or archived)
+## identify files that are not part of the parent html/php hierarchy (i.e. files that can be deleted or archived)
 echo -e "\n--- UNUSED FILES ---"
 >unused.flist
 comm -23 wrkdir.all.flist $BASE_DIRNAME.flist | tee -a unused.flist
 
 
-## identify files that are needed by the parent html file which are missing
+## identify files that are needed by the parent html/php file which are missing
 comm -13 wrkdir.all.flist $BASE_DIRNAME.flist > missing.flist
 
 files_in_different_hierarchy=`grep -v "^$BASE_DIRNAME" missing.flist | tr '\n' '^'`

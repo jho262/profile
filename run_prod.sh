@@ -100,7 +100,7 @@ elif [[ "$OPERATION" == "deploy" ]];then
 elif [[ "$OPERATION" == "verify" ]];then
   echo "... verifying PROD updates to $WEBPG page"
 
-  ./find_child_ref_status.sh index.html
+  ./find_child_ref_status.sh index.php
 
 #-------------------------
 #        ## Check my URLs for non-http 200 responses
