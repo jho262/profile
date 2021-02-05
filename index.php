@@ -119,11 +119,11 @@ in the Healthcare Industry, 2.5 years as a Programmer Analyst to migrate to a ne
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="expect_scripts">Expect scripts</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="sql">SQL</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="elixir">Elixir report tool</span></div></li>
-				<li class="spaceA"><div class="content"><span title="Please wait ..." id="reporting">Cognos/Elixir/Crystal Report tools</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="rdbms">Relational database management systems (RDBMS)</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="cdms">Configuration database management/version control systems (CDMS) </span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="apache_web_server">Apache Web Server</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="crm">Customer Relations Management (CRM) administration</span></div></li>
+				<li class="spaceA"><div class="content"><span title="Please wait ..." id="reporting">Cognos/Elixir/Crystal Report tools</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="pgp">PGP</span></div></li>
                                 <li class="spaceA"><div class="content"><span title="Please wait ..." id="html">HTML</span></div></li>
 				<li class="spaceA"><div class="content"><span title="Please wait ..." id="css">CSS</span></div></li>
